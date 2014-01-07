@@ -10,7 +10,8 @@ function start(){
 }
 
 function update(){
-	player.update()
+	player.update(30/1000);
+	particles.update(30/1000)
 	draw();
 }
 
@@ -21,6 +22,7 @@ function draw(){
 	
 	gridDraw(ctx)
 	player.draw(ctx);
+	particles.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
 

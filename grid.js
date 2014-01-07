@@ -1,4 +1,10 @@
-var gridData
+var gridData = new Array();
+
+gridData.fromVec = function(vec){
+	if(vec.x >= this.length || vec.x < 0 || vec.y >= this[0].length || vec.y < 0)
+		return 0;	
+	return gridData[Math.floor(vec.x)][Math.floor(vec.y)];
+}
 
 function forEachIn(doThis){
 	for(var i = 0; i < gridData.width; i++){
@@ -22,7 +28,6 @@ function setupGrid(){
 	
 
 function createGrid(x,y){
-	gridData = new Array();
 	gridData.width = x;
 	gridData.height = y;
 	for(var i = 0; i < x; i++){

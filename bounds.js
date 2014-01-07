@@ -18,11 +18,15 @@ function bounds(pos,size){//pos and size are vectors
 		temp.scale(time);
 		this.pos.x += temp.x
 
-		if(gridData[Math.floor(this.getLeft())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getLeft())][Math.floor(this.getBottom())] == 0)
-			this.setLeft(Math.ceil(this.getLeft()) + 0.001);
+		var collideSpeed = 0;
 
-		if(gridData[Math.floor(this.getRight())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getRight())][Math.floor(this.getBottom())] == 0)
+		if(gridData[Math.floor(this.getLeft())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getLeft())][Math.floor(this.getBottom())] == 0){
+			this.setLeft(Math.ceil(this.getLeft()) + 0.001);
+		}
+
+		if(gridData[Math.floor(this.getRight())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getRight())][Math.floor(this.getBottom())] == 0){
 			this.setRight(Math.floor(this.getRight()) - 0.001);
+		}
 
 
 		this.pos.y += temp.y
@@ -35,10 +39,17 @@ function bounds(pos,size){//pos and size are vectors
 		
 		if(gridData[Math.floor(this.getLeft())][Math.floor(this.getBottom())] == 0 || gridData[Math.floor(this.getRight())][Math.floor(this.getBottom())] == 0){
 			this.setBottom(Math.floor(this.getBottom()) - 0.001);
+			collideSpeed = Math.abs(this.vel.y);
 			this.vel.y = 0;
 		}
+
+		if(this.onCollide != null && collideSpeed > 3){
+			this.onCollide(collideSpeed);
+		}
+			
 		//add collision code later
 		//
 		//
 	}
+
 }
