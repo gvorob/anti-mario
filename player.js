@@ -24,5 +24,6 @@ player.update = function(time){
 }
 
 player.draw = function(ctx){
+	ctx.fillStyle="#88F";
 	ctx.fillRect(32 * this.bounds.pos.x, 32 * this.bounds.pos.y, 32 * this.bounds.size.x, 32 * this.bounds.size.y);
 }
