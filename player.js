@@ -15,9 +15,10 @@ player.update = function(time){
 	else 
 		this.bounds.vel.x = 0;
 
-	if(keyState[32]){
+	if(keyState[32] || keyState[38]){
 		this.bounds.vel.y = -6.5;
 		keyState[32] = false;
+		keyState[38] = false;
 	}
 
 	this.bounds.move(30/1000);

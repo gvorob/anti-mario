@@ -7,6 +7,11 @@ function start(){
 	ctx.font = "12px arial";
 	setupGrid()
 
+	canvas.addEventListener('click', function(event){
+		var tile = new Vector(event.offsetX / 32, event.offsetY / 32);	
+		gridData.setFromVec(tile, gridData.fromVec(tile) * -1 + 1);
+		console.log(tile.x + " " + tile.y);
+	});
 }
 
 function update(){
@@ -43,3 +48,4 @@ function drawCircle(context, location, radius)
 	context.fill();
 	context.closePath();
 }
+

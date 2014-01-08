@@ -6,6 +6,13 @@ gridData.fromVec = function(vec){
 	return gridData[Math.floor(vec.x)][Math.floor(vec.y)];
 }
 
+
+gridData.setFromVec = function(vec, n){
+	if(vec.x >= this.length || vec.x < 0 || vec.y >= this[0].length || vec.y < 0)
+		return;	
+	gridData[Math.floor(vec.x)][Math.floor(vec.y)] = n;
+}
+
 function forEachIn(doThis){
 	for(var i = 0; i < gridData.width; i++){
 		for(var j = 0; j < gridData.height; j++){

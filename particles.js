@@ -93,13 +93,13 @@ function particleDust(pos, vel, size, drag, opacity, lifetime){
 }
 
 particles.doStomp = function(pos, speed){
-	var numParts = (2 + Math.floor(speed / 4)) * (1 + 0.3 * Math.random());
+	var numParts = (10 + Math.floor(speed / 3)) * (1 + 0.3 * Math.random());
 	for(var i = 0; i < numParts; i++){
 		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.2);
 		vel.setLength(0.6 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5)));
 		var time = 1 * (1 + (Math.random() - 0.5));
 		var size = 1 + 0.6 * speed * (1 + (Math.random() - 0.5));
-		var opacity = 0.7 * (1 + (Math.random() -0.5));
+		var opacity = 0.3 * (1 + (Math.random() -0.5));
 		var drag = 3.8;
 			
 		particles.add(new particleDust(pos.clone(),vel, size, drag, opacity, time));
