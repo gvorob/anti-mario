@@ -2,6 +2,7 @@ function bounds(pos,size){//pos and size are vectors
 	this.pos = pos;
 	this.size = size;
 	this.vel = new Vector(0,0);
+	this.onGround = false;
 
 	this.getTop = function(){return pos.y}
 	this.getBottom = function(){return pos.y + size.y}
@@ -14,6 +15,7 @@ function bounds(pos,size){//pos and size are vectors
 	this.setRight = function(n){pos.x = n - size.x}
 
 	this.move = function(time){
+		this.onGround = false;
 		var temp = this.vel.clone();
 		temp.scale(time);
 		this.pos.x += temp.x
@@ -41,6 +43,7 @@ function bounds(pos,size){//pos and size are vectors
 			this.setBottom(Math.floor(this.getBottom()) - 0.001);
 			collideSpeed = Math.abs(this.vel.y);
 			this.vel.y = 0;
+			this.onGround = true;
 		}
 
 		if(this.onCollide != null && collideSpeed > 3){
@@ -51,5 +54,6 @@ function bounds(pos,size){//pos and size are vectors
 		//
 		//
 	}
+
 
 }

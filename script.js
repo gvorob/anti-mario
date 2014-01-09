@@ -1,7 +1,9 @@
 var canvas, ctx;
+var player
+var pause
 
 function start(){
-	setInterval(update,30);
+	pause = setInterval(update,30);
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
@@ -12,6 +14,7 @@ function start(){
 		gridData.setFromVec(tile, gridData.fromVec(tile) * -1 + 1);
 		console.log(tile.x + " " + tile.y);
 	});
+	player = new player();
 }
 
 function update(){

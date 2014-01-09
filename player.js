@@ -1,30 +1,57 @@
-var player = new Object();
-player.bounds = new bounds(new Vector(5,0), new Vector(0.5,0.8));
+function player(){
+	this.bounds = new bounds(new Vector(5,0), new Vector(0.5,0.8));
 
-player.bounds.onCollide = function(speed){
-	particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
-}
-
-player.update = function(time){
-	this.bounds.vel.add(0,15 * time);
-	
-	if(keyState[37])
-		this.bounds.vel.x = -3;
-	else if(keyState[39])
-		this.bounds.vel.x = 3;
-	else 
-		this.bounds.vel.x = 0;
-
-	if(keyState[32] || keyState[38]){
-		this.bounds.vel.y = -6.5;
-		keyState[32] = false;
-		keyState[38] = false;
+	this.bounds.onCollide = function(speed){
+		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
 	}
 
-	this.bounds.move(30/1000);
-}
+	this.offset = new Vector(-0.1,0.2);
+	this.pack = new jetpackEmitter(this.bounds.pos, this.offset);
 
-player.draw = function(ctx){
-	ctx.fillStyle="#88F";
-	ctx.fillRect(32 * this.bounds.pos.x, 32 * this.bounds.pos.y, 32 * this.bounds.size.x, 32 * this.bounds.size.y);
+
+	this.jumpState = 0;
+	//0 is nothing pressed
+	//1 is button has been pressed
+	//2 is button has been pressed in air
+	this.update = function(time){
+
+		this.bounds.vel.add(0,25 * time);
+		this.bounds.vel.x = 0;	
+		if(keyState[37])
+			this.bounds.vel.x = -3;
+			
+		if(keyState[39])
+			this.bounds.vel.x += 3;
+
+		if(this.bounds.onGround){
+			if(this.jumpState == 2)
+				this.jumpState = 1;
+			if(keyState[90] && this.jumpState == 0)
+			{
+				this.jumpState = 1;
+				this.bounds.vel.y = -8.5;
+			}
+			if(!keyState[90])
+				this.jumpState = 0;
+		}
+		else{
+			if(!keyState[90]){
+				this.jumpState = 0;
+			}
+			else if(keyState[90] && this.jumpState != 1){
+				this.jumpState = 2;
+				this.bounds.vel.y = -3;
+				this.pack.update(time);
+			}
+		}	
+
+		if(this.bounds.vel.x != 0)
+			this.offset.x = this.bounds.vel.x>0?-0.1:0.6;
+		this.bounds.move(30/1000);
+	}
+
+	this.draw = function(ctx){
+		ctx.fillStyle="#88F";
+		ctx.fillRect(32 * this.bounds.pos.x, 32 * this.bounds.pos.y, 32 * this.bounds.size.x, 32 * this.bounds.size.y);
+	}
 }
