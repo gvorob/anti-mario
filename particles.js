@@ -165,15 +165,15 @@ function jetpackEmitter(pos, offset){
 	this.numToSpawn = 0;
 
 	this.update = function(time){
-		this.numToSpawn += time * 40;
+		this.numToSpawn += time * 60;
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
-			var vel = new Vector(Math.random() * 0.5 - 0.25, 2);
-			vel.setLength(randOff(8,0.5));
-			var time = randOff(1,0.5);
-			var size = randOff(7,0.5);
-			var maxSize = randOff(size * 3,0.5);
+			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
+			vel.setLength(randOff(8,0.2));
+			var time = randOff(0.5,0.5);
+			var size = randOff(6,0.5);
+			var maxSize = randOff(size * 2,0.5);
 			var opacity = randOff(0.3,0.5);
-			var drag = 2.8;
+			var drag = 3.5;
 			var r = Math.random() * 55 + 200;
 			var g = Math.random() * 255;
 			var col = new color(r, r * g / 255,0, 1);

@@ -48,7 +48,7 @@ function gridDraw(ctx){
 			if(gridData[i][j] == 0)
 				ctx.fillStyle="#000"		       
 			else
-				ctx.fillStyle="#FFF"
+				ctx.fillStyle="#046"
 			ctx.strokeRect(i * 32, j * 32, 32, 32);
 			ctx.fillRect(i * 32, j * 32, 32, 32);
 		}
