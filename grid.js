@@ -55,3 +55,17 @@ function gridDraw(ctx){
 	}
 }
 
+function save(){
+	var result = "";
+	result+= gridData.width + "." + gridData.height + ".";
+	for(var i = 0; i < gridData.width; i++){
+		for(var j = 0; j < gridData.height; j++){
+			result += gridData[i][j];
+		}
+	}
+	return result;
+}
+		
+function load(inString){
+
+}

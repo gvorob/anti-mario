@@ -10,5 +10,10 @@
 </head>
 <body onLoad="start()">
 	<canvas id="canvas" width="500" height="500" style="float:left;">You have a shitty browser, mate</canvas>
+	<div>
+		<button onClick="document.getElementById('levelData').innerHTML = save()">Save Level</button>
+		<button onClick="load(document.getElementById('levelData').innerHTML)">Load Level</button>
+	</div>
+	<textarea id="levelData"></textarea>	
 </body>
 </html>

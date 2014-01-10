@@ -17,6 +17,7 @@ function start(){
 	player = new player();
 }
 
+
 function update(){
 	player.update(30/1000);
 	particles.update(30/1000)
