@@ -33,7 +33,9 @@ function draw(){
 	particles.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
-
+	var count = 0
+	for(var i = 0; i < particles.length;i++){if(particles[i]!=null)count++;}
+	ctx.fillText("Particles: " + count, 2, 500);
 }
 
 function drawLine(context, startVector, changeVector){

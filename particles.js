@@ -146,9 +146,8 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 	
 	this.draw = function(ctx){
 		var timeScale = this.lifetime / this.maxLife;
-		debug = this.col.createInterpolated(new color(255,255,255,0),timeScale);
 
-		ctx.fillStyle = this.col.createInterpolated(new color(255,255,255,0),timeScale);
+		ctx.fillStyle = this.col.createInterpolated(new color(355,355,355,0),timeScale);
 		
 		var temp = pos.clone();
 		temp.scale(32);
@@ -165,18 +164,18 @@ function jetpackEmitter(pos, offset){
 	this.numToSpawn = 0;
 
 	this.update = function(time){
-		this.numToSpawn += time * 60;
+		this.numToSpawn += time * 120;
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
 			vel.setLength(randOff(8,0.2));
 			var time = randOff(0.5,0.5);
 			var size = randOff(6,0.5);
 			var maxSize = randOff(size * 2,0.5);
-			var opacity = randOff(0.3,0.5);
+			var opacity = 0.001;
 			var drag = 3.5;
-			var r = Math.random() * 55 + 200;
-			var g = Math.random() * 255;
-			var col = new color(r, r * g / 255,0, 1);
+			var r = 255//Math.random() * 55 + 200;
+			var g = Math.random() * 100 + 120;
+			var col = new color(r, r * g / 255,0, 0.5);
 
 			var temp = this.pos.clone();
 			temp.addVec(this.offset);	
