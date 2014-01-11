@@ -7,7 +7,8 @@ function start(){
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
-	setupGrid()
+	//setupGrid()
+	load(document.getElementById('levelData').value);
 
 	canvas.addEventListener('click', function(event){
 		var tile = new Vector(event.offsetX / 32, event.offsetY / 32);	

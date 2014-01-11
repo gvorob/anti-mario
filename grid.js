@@ -1,14 +1,14 @@
 var gridData = new Array();
 
 gridData.fromVec = function(vec){
-	if(vec.x >= this.length || vec.x < 0 || vec.y >= this[0].length || vec.y < 0)
+	if(vec.x >= this.width || vec.x < 0 || vec.y >= this.height || vec.y < 0)
 		return 0;	
 	return gridData[Math.floor(vec.x)][Math.floor(vec.y)];
 }
 
 
 gridData.setFromVec = function(vec, n){
-	if(vec.x >= this.length || vec.x < 0 || vec.y >= this[0].length || vec.y < 0)
+	if(vec.x >= this.width || vec.x < 0 || vec.y >= this.height || vec.y < 0)
 		return;	
 	gridData[Math.floor(vec.x)][Math.floor(vec.y)] = n;
 }
@@ -67,5 +67,10 @@ function save(){
 }
 		
 function load(inString){
-
+	var result = inString.split(".");
+	gridData.width = parseInt(result[0]);
+	gridData.height = parseInt(result[1]);
+	createGrid(gridData.width,gridData.height);
+	result = result[2];
+	forEachIn(function(i,j){gridData[i][j] = result[j + i * gridData.height];});
 }
