@@ -14,31 +14,32 @@ function player(){
 	//1 is button has been pressed
 	//2 is button has been pressed in air
 	this.update = function(time){
+		var jumpKey = keyState[87] || keyState[38] || keyState[90];
 
 		this.bounds.vel.add(0,25 * time);
 		this.bounds.vel.x = 0;	
-		if(keyState[37])
+		if(keyState[37] || keyState[65])
 			this.bounds.vel.x = -3;
 			
-		if(keyState[39])
+		if(keyState[39] || keyState[68])
 			this.bounds.vel.x += 3;
 
 		if(this.bounds.onGround){
 			if(this.jumpState == 2)
 				this.jumpState = 1;
-			if(keyState[90] && this.jumpState == 0)
+			if(jumpKey && this.jumpState == 0)
 			{
 				this.jumpState = 1;
 				this.bounds.vel.y = -8.5;
 			}
-			if(!keyState[90])
+			if(!jumpKey)
 				this.jumpState = 0;
 		}
 		else{
-			if(!keyState[90]){
+			if(!jumpKey){
 				this.jumpState = 0;
 			}
-			else if(keyState[90] && this.jumpState != 1){
+			else if(jumpKey && this.jumpState != 1){
 				this.jumpState = 2;
 				this.bounds.vel.y = -3;
 				this.pack.update(time);

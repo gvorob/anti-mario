@@ -1,6 +1,7 @@
 var canvas, ctx;
-var player
-var pause
+var player;
+var screenOffset;
+var pause;
 
 function start(){
 	pause = setInterval(update,30);
@@ -11,33 +12,50 @@ function start(){
 	load(document.getElementById('levelData').value);
 
 	canvas.addEventListener('click', function(event){
-		var tile = new Vector(event.offsetX / 32, event.offsetY / 32);	
+		var tile = new Vector((event.offsetX - screenOffset.x) / 32, (event.offsetY - screenOffset.y) / 32);	
 		gridData.setFromVec(tile, gridData.fromVec(tile) * -1 + 1);
 		console.log(tile.x + " " + tile.y);
 	});
 	player = new player();
+	screenOffset = new Vector();
 }
 
 
 function update(){
+		
+	screenOffset.assign(player.bounds.pos);
+	screenOffset.scale(-32);
+	screenOffset.add(250,250);
+
 	player.update(30/1000);
 	particles.update(30/1000)
 	draw();
 }
 
 function draw(){
+			
 	ctx.clearRect(0,0,canvas.width,canvas.width);
-	ctx.strokeStyle="rgb(0,0,0)";
+	ctx.strokeStyle="rgb(0,0,255)";
 	ctx.strokeRect(0,0,500,500);
+	ctx.strokeStyle="rgb(0,0,0)";
 	
+	ctx.translate(screenOffset.x, screenOffset.y);
+
+
 	gridDraw(ctx)
 	player.draw(ctx);
 	particles.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
+	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
+
+
 	var count = 0
 	for(var i = 0; i < particles.length;i++){if(particles[i]!=null)count++;}
+
 	ctx.fillText("Particles: " + count, 2, 500);
+
+
 }
 
 function drawLine(context, startVector, changeVector){

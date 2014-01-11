@@ -156,8 +156,6 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 	}
 }
 
-var debug
-
 function jetpackEmitter(pos, offset){
 	this.pos = pos;
 	this.offset = offset;
