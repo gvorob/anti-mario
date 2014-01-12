@@ -1,5 +1,5 @@
 function player(){
-	this.bounds = new bounds(new Vector(5,0), new Vector(0.5,0.8));
+	this.bounds = new bounds(new Vector(1.25,1), new Vector(0.5,0.8));
 
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
@@ -7,6 +7,8 @@ function player(){
 
 	this.offset = new Vector(-0.1,0.2);
 	this.pack = new jetpackEmitter(this.bounds.pos, this.offset);
+	this.waterCannon = new waterSprayEmitter();
+	this.facing = 1;
 
 
 	this.jumpState = 0;
@@ -23,6 +25,11 @@ function player(){
 			
 		if(keyState[39] || keyState[68])
 			this.bounds.vel.x += 3;
+
+		if(this.bounds.vel.x != 0)//sets facing
+			this.facing = this.bounds.vel.x>0?1:-1;
+		
+
 
 		if(this.bounds.onGround){
 			if(this.jumpState == 2)
@@ -45,6 +52,12 @@ function player(){
 				this.pack.update(time);
 			}
 		}	
+
+		if(keyState[88]){
+			var temp = this.bounds.pos.clone();
+			temp.add(0.25,0.4);
+			this.waterCannon.update(time,temp,this.facing);
+		}
 
 		if(this.bounds.vel.x != 0)
 			this.offset.x = this.bounds.vel.x>0?-0.1:0.6;

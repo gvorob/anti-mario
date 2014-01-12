@@ -53,7 +53,8 @@ function draw(){
 	var count = 0
 	for(var i = 0; i < particles.length;i++){if(particles[i]!=null)count++;}
 
-	ctx.fillText("Particles: " + count, 2, 500);
+	ctx.fillText("Particles: " + count, 2, 499);
+	ctx.fillText("Vel: x " + player.bounds.vel.x + "; y " + player.bounds.vel.y, 2, 487);
 
 
 }

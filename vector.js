@@ -44,6 +44,11 @@ Vector.prototype.addScaledVec = function(scale,other){
 	this.y += other.y * scale;
 }
 
+Vector.prototype.multElements = function(other){
+	this.x *= other.x;
+	this.y *= other.y;
+}
+
 Vector.prototype.clone = function(){
 	return new Vector(this.x,this.y);
 }

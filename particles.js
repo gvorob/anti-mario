@@ -183,6 +183,88 @@ function jetpackEmitter(pos, offset){
 
 }
 
+
+
+function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
+	this.pos = pos;
+	this.vel = vel;
+	this.size = size;
+	this.maxSize = maxSize;
+	this.drag = drag;
+	this.lifetime = lifetime;
+	this.maxLife = lifetime;
+	this.col = col;
+	this.isDead = false;
+	this.bounceX = new Vector(0.4,1);//off a wall
+	this.bounceY = new Vector(0.9,0.6);//off the ground
+
+	this.update = function(time){
+		this.lifetime -= time;
+		if(this.lifetime < 0)
+			this.isDead = true;
+		else{
+			this.vel.add(0,time * 25);
+			this.vel.scale(1 - this.drag * time);
+
+			var temp = this.vel.clone();
+			temp.scale(time);
+			this.pos.x += temp.x
+
+			if(gridData.fromVec(this.pos) == 0){
+				this.pos.x -= this.vel.x * time;
+				this.vel.x *= -1;
+				this.vel.multElements(this.bounceX);
+			}
+
+			this.pos.y += temp.y
+				
+			if(gridData.fromVec(this.pos) == 0){
+				this.pos.y -= this.vel.y * time;
+				this.vel.y *= -1;
+				this.vel.multElements(this.bounceY);
+			}
+					
+		}
+	}
+	
+	this.draw = function(ctx){
+		var timeScale = this.lifetime / this.maxLife;
+
+		ctx.fillStyle = this.col.create()//this.col.createInterpolated(new color(155,155,255,0),timeScale);
+		
+		var temp = pos.clone();
+		temp.scale(32);
+		timeScale = Math.sqrt(timeScale);
+		drawCircle(ctx,temp, this.maxSize + (this.size - this.maxSize) * timeScale );
+	}
+}
+
+
+function waterSprayEmitter(){
+	this.pos = new Vector();
+	this.facing = false;//left
+	this.numToSpawn = 0;
+
+	this.update = function(time, pos, facing){
+
+
+		this.numToSpawn += time * 100;
+		for(;this.numToSpawn >= 1; this.numToSpawn--){
+			var vel = new Vector(2.0 * facing,randOff(-0.6,0.1));
+			vel.setLength(randOff(15,0.2));
+			var time = randOff(1.5,0.5);
+			var size = randOff(16,0.5);
+			var maxSize = 0//randOff(size * 2,0.5);
+			var drag = 0.3;
+			var g = Math.random() * 155 + 80;
+			var col = new color(g,g + 20,255,randOff(0.4,0.5));
+
+			particles.add(new particleWaterSpray(pos.clone(), vel, size / 2, maxSize, drag, col,time));
+		}
+	};
+
+}
+
 function color(r,g,b,a){
 	this.r = r;
 	this.g = g;
@@ -190,7 +272,7 @@ function color(r,g,b,a){
 	this.a = a;
 
 	this.create = function(){
-		return "rgba(" + this.r + ", " + this.g + ", " + this.b + ", " + this.a + ")";
+		return "rgba(" + Math.floor(this.r) + ", " + Math.floor(this.g) + ", " + Math.floor(this.b) + ", " + this.a + ")";
 	}
 
 	this.createInterpolated = function(end, scale){//scale is from 0 to 1, 1 is all this, 0 is all end
