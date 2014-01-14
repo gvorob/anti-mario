@@ -57,5 +57,9 @@ function bounds(pos,size){//pos and size are vectors
 		//
 	}
 
+	this.contains = function(pos){
+		return pos.x > this.pos.x && pos.y > this.pos.y && pos.x < this.pos.x + this.size.x && pos.y < this.pos.y + this.size.y;
+	}
+
 
 }

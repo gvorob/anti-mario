@@ -34,6 +34,15 @@ enemies.add = function(part){
 	}
 }
 
+enemies.getHere = function(pos){
+	for(var i = 0; i < this.length; i++){
+		if(this[i] != null)
+			if(this[i].bounds.contains(pos))
+				return this[i];
+	}
+	return null;
+}
+
 function Slime(bounds){
 	this.bounds = bounds;
 
@@ -53,15 +62,14 @@ Slime.prototype.update = function(time){
 
 	this.bounds.move(time);
 
-	if(this.bounds.onGround && this.jumpDelay == -1){
-		this.jumpDelay = randOff(1,0.2);
-		this.bounds.vel.x = 0;
-	}
-	else if(!this.bounds.onGround){
+	if(!this.bounds.onGround){
 		this.jumpDelay = -1;
 	}
 	else{//on the ground, counting down
+		if(this.jumpDelay == -1)
+			this.jumpDelay = randOff(1,0.2);
 		this.jumpDelay -= time
+		this.bounds.vel.x -= time * this.bounds.vel.x * 0.9
 		if(this.jumpDelay < 0){
 			this.jump();
 			this.jumpDelay = -1;

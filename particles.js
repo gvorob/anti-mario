@@ -223,6 +223,13 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 				this.vel.y *= -1;
 				this.vel.multElements(this.bounceY);
 			}
+
+			var enemyHere = enemies.getHere(this.pos)
+			if(enemyHere != null){
+				enemyHere.bounds.vel.addScaledVec(this.lifetime / this.maxLife / 10, this.vel );
+				//enemyHere.isDead = true;
+				this.isDead = true;
+			}
 					
 		}
 	}
