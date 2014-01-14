@@ -24,10 +24,12 @@ function bounds(pos,size){//pos and size are vectors
 
 		if(gridData[Math.floor(this.getLeft())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getLeft())][Math.floor(this.getBottom())] == 0){
 			this.setLeft(Math.ceil(this.getLeft()) + 0.001);
+			this.vel.x = 0;
 		}
 
 		if(gridData[Math.floor(this.getRight())][Math.floor(this.getTop())] == 0 || gridData[Math.floor(this.getRight())][Math.floor(this.getBottom())] == 0){
 			this.setRight(Math.floor(this.getRight()) - 0.001);
+			this.vel.x = 0;
 		}
 
 

@@ -195,8 +195,8 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 	this.maxLife = lifetime;
 	this.col = col;
 	this.isDead = false;
-	this.bounceX = new Vector(0.4,1);//off a wall
-	this.bounceY = new Vector(0.9,0.6);//off the ground
+	this.bounceX = new Vector(randOff(0.2,0.3),1);//off a wall
+	this.bounceY = new Vector(randOff(0.8,0.2),0.6);//off the ground
 
 	this.update = function(time){
 		this.lifetime -= time;

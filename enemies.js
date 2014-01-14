@@ -39,12 +39,13 @@ function Slime(bounds){
 
 	
 	this.bounds.onCollide = function(speed){
-		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
+		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed / 2);
 	}
 
 	this.vel = 0;
 	this.jumpDelay = 1;
 	this.col = new color(100,200,50,1);
+	this.isDead = false;
 }
 
 Slime.prototype.update = function(time){
@@ -53,31 +54,29 @@ Slime.prototype.update = function(time){
 	this.bounds.move(time);
 
 	if(this.bounds.onGround && this.jumpDelay == -1){
-		jumpDelay = 1;
+		this.jumpDelay = randOff(1,0.2);
+		this.bounds.vel.x = 0;
 	}
 	else if(!this.bounds.onGround){
-		jumpDelay = -1;
+		this.jumpDelay = -1;
 	}
 	else{//on the ground, counting down
-		jumpDelay -= time
-		if(jumpDelay < 0){
+		this.jumpDelay -= time
+		if(this.jumpDelay < 0){
 			this.jump();
-			jumpDelay = -1;
+			this.jumpDelay = -1;
 		}
 	}
 
 }
 
 Slime.prototype.jump = function(){
-	this.bounds.vel.set(1,-10);
-}
-
-Slime.prototype.isDead = function(){
-	return false;
+	this.bounds.vel.set(Math.random()>0.5?-1:1, randOff(-10,0.2));
+	this.bounds.vel.x *= Math.random() + 1.5
 }
 
 Slime.prototype.draw = function(ctx){
 	ctx.fillStyle = this.col.create();
-	ctx.fillRect(this.bounds.pos.x,this.bounds.pos.y,this.bounds.size.x,this.bounds.y);
-	console.log("agh");
+	debug = this.bounds
+	ctx.fillRect(this.bounds.pos.x * 32,this.bounds.pos.y * 32,this.bounds.size.x * 32,this.bounds.size.y * 32);
 }

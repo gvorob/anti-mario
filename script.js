@@ -22,10 +22,16 @@ function start(){
 
 
 function update(){
+
 		
 	screenOffset.assign(player.bounds.pos);
 	screenOffset.scale(-32);
 	screenOffset.add(250,250);
+
+	if(keyState[67]){
+		enemies.add(new Slime(new bounds(player.bounds.pos.clone(),new Vector(0.5,0.5))));
+		keyState[67] = false;
+	}
 
 	player.update(30/1000);
 	particles.update(30/1000);
@@ -45,8 +51,8 @@ function draw(){
 
 	gridDraw(ctx)
 	player.draw(ctx);
-	particles.draw(ctx);
 	enemies.draw(ctx);
+	particles.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
