@@ -1,36 +1,36 @@
 particles = new Array();
 
 particles.update = function(time){
-	for(var i = 0; i < particles.length; i++)
+	for(var i = 0; i < this.length; i++)
 	{
-		if(particles[i] != null){
-			particles[i].update(time);
-			if(particles[i].isDead)
-				particles[i] = null;
+		if(this[i] != null){
+			this[i].update(time);
+			if(this[i].isDead)
+				this[i] = null;
 		}
 	}
 }
 
 particles.draw = function(ctx){
-	for(var i = 0; i < particles.length; i++)
+	for(var i = 0; i < this.length; i++)
 	{
-		if(particles[i] != null){
-			particles[i].draw(ctx);
+		if(this[i] != null){
+			this[i].draw(ctx);
 		}
 	}
 }
 
 particles.add = function(part){
 	var i;
-	for(i = 0; i < particles.length && i != -1; i++)
+	for(i = 0; i < this.length && i != -1; i++)
 	{
-		if(particles[i] == null){
-			particles[i] = part;
+		if(this[i] == null){
+			this[i] = part;
 			i = -2;
 		}
 	}
 	if(i != -1){//was not added
-		particles[particles.length] = part;
+		this[this.length] = part;
 	}
 }
 	

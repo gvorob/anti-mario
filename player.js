@@ -61,7 +61,7 @@ function player(){
 
 		if(this.bounds.vel.x != 0)
 			this.offset.x = this.bounds.vel.x>0?-0.1:0.6;
-		this.bounds.move(30/1000);
+		this.bounds.move(time);
 	}
 
 	this.draw = function(ctx){

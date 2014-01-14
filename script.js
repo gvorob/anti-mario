@@ -28,7 +28,8 @@ function update(){
 	screenOffset.add(250,250);
 
 	player.update(30/1000);
-	particles.update(30/1000)
+	particles.update(30/1000);
+	enemies.update(30/1000);
 	draw();
 }
 
@@ -45,6 +46,7 @@ function draw(){
 	gridDraw(ctx)
 	player.draw(ctx);
 	particles.draw(ctx);
+	enemies.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
