@@ -4,13 +4,17 @@ var screenOffset;
 var pause;
 var cellSize = 8;
 
+$(function() { start();});
+
 function start(){
+	setupEventHandlers();
+
 	pause = setInterval(update,30);
-	canvas = document.getElementById("canvas");
+	canvas = $("#canvas").get(0);
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
 	//setupGrid()
-	load(document.getElementById('levelData').value);
+	load($('#levelData').text());
 
 	canvas.addEventListener('click', function(event){
 		var tile = new Vector((event.layerX - screenOffset.x) / cellSize, (event.layerY - screenOffset.y) / cellSize);	

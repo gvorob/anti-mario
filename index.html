@@ -1,5 +1,7 @@
 <html>
 <head>
+	<script src="jquery-1.11.1.js"></script>
+
 	<script src="script.js"></script>
 	<script src="vector.js"></script>
 	<script src="grid.js"></script>
@@ -8,18 +10,31 @@
 	<script src="keyboard.js"></script>
 	<script src="particles.js"></script>
 	<script src="enemies.js"></script>
+	<script src="events.js"></script>
 
 	<style>
 	canvas{
 		float: left;
 	}
+	#buttons{
+		clear: both;
+	}
+	#buttons > div{
+		width: auto;
+		float: left;
+		border-color: black;
+		border-style: solid;
+		border-width: 1px;
+		padding: 2px;
+		margin: 2px;
+	}
+	#buttons .on{
+		background-color: red;
+	}
 	</style>
 </head>
-<body onLoad="start()">
+<body>
 	<canvas id="canvas" width="500" height="500">You have a shitty browser, mate</canvas>
-	<div id=buttons>
-	
-	</div>
 	<div>
 		<button onClick="document.getElementById('levelData').value = save()">Save Level</button>
 		<button onClick="load(document.getElementById('levelData').value)">Load Level</button>
@@ -28,6 +43,10 @@
 
 	<div>
 		WASD or arrows to move, z to jump, x to shoot, c to spawn slimes.
+	</div>
+	<div id=buttons>
+		<div id=playbutton>Play Mode</div>
+		<div id=editbutton>Edit Mode</div>
 	</div>
 </body>
 </html>

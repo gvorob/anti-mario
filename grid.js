@@ -49,7 +49,7 @@ function createGrid(x,y){
 
 function gridDraw(ctx){
 	//console.time('before');
-	ctx.fillStyle="#ccf";
+	ctx.fillStyle="#558";
 	ctx.fillRect(0, 0, gridData.width * cellSize, gridData.height * cellSize);
 
 	ctx.fillStyle="#000";
