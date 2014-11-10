@@ -2,6 +2,7 @@ var canvas, ctx;
 var player;
 var screenOffset;
 var pause;
+var cellSize = 8;
 
 function start(){
 	pause = setInterval(update,30);
@@ -12,7 +13,9 @@ function start(){
 	load(document.getElementById('levelData').value);
 
 	canvas.addEventListener('click', function(event){
-		var tile = new Vector((event.offsetX - screenOffset.x) / 32, (event.offsetY - screenOffset.y) / 32);	
+		var tile = new Vector((event.layerX - screenOffset.x) / cellSize, (event.layerY - screenOffset.y) / cellSize);	
+		tile.x--;
+		tile.y--;
 		gridData.setFromVec(tile, gridData.fromVec(tile) * -1 + 1);
 		console.log(tile.x + " " + tile.y);
 	});
@@ -25,7 +28,7 @@ function update(){
 
 		
 	screenOffset.assign(player.bounds.pos);
-	screenOffset.scale(-32);
+	screenOffset.scale(-cellSize);
 	screenOffset.add(250,250);
 
 	if(keyState[67]){

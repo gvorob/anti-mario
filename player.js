@@ -1,14 +1,21 @@
+var cellSize = 8;
+
 function player(){
-	this.bounds = new bounds(new Vector(1.25,1), new Vector(0.5,0.8));
+	this.bounds = new bounds(new Vector(2,1), new Vector(2.5,4.5));
 
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
 	}
 
-	this.offset = new Vector(-0.1,0.2);
+	this.offset = new Vector(-0.1,0.8);
 	this.pack = new jetpackEmitter(this.bounds.pos, this.offset);
 	this.waterCannon = new waterSprayEmitter();
 	this.facing = 1;
+
+	this.movespeed = 12;
+	this.gravity = 50;
+	this.jumpspeed = 17;
+	this.jetpackspeed = 8;
 
 
 	this.jumpState = 0;
@@ -18,13 +25,13 @@ function player(){
 	this.update = function(time){
 		var jumpKey = keyState[87] || keyState[38] || keyState[90];
 
-		this.bounds.vel.add(0,25 * time);
+		this.bounds.vel.add(0, this.gravity * time);
 		this.bounds.vel.x = 0;	
 		if(keyState[37] || keyState[65])
-			this.bounds.vel.x = -3;
+			this.bounds.vel.x = -1 * this.movespeed;
 			
 		if(keyState[39] || keyState[68])
-			this.bounds.vel.x += 3;
+			this.bounds.vel.x += this.movespeed;
 
 		if(this.bounds.vel.x != 0)//sets facing
 			this.facing = this.bounds.vel.x>0?1:-1;
@@ -37,7 +44,7 @@ function player(){
 			if(jumpKey && this.jumpState == 0)
 			{
 				this.jumpState = 1;
-				this.bounds.vel.y = -8.5;
+				this.bounds.vel.y = -1 * this.jumpspeed;
 			}
 			if(!jumpKey)
 				this.jumpState = 0;
@@ -48,7 +55,7 @@ function player(){
 			}
 			else if(jumpKey && this.jumpState != 1){
 				this.jumpState = 2;
-				this.bounds.vel.y = -3;
+				this.bounds.vel.y = -1 * this.jetpackspeed;
 				this.pack.update(time);
 			}
 		}	
@@ -60,12 +67,12 @@ function player(){
 		}
 
 		if(this.bounds.vel.x != 0)
-			this.offset.x = this.bounds.vel.x>0?-0.1:0.6;
+			this.offset.x = this.facing>0?-0.1:2.6;
 		this.bounds.move(time);
 	}
 
 	this.draw = function(ctx){
 		ctx.fillStyle="#88F";
-		ctx.fillRect(32 * this.bounds.pos.x, 32 * this.bounds.pos.y, 32 * this.bounds.size.x, 32 * this.bounds.size.y);
+		ctx.fillRect(cellSize * this.bounds.pos.x, cellSize * this.bounds.pos.y, cellSize * this.bounds.size.x, cellSize * this.bounds.size.y);
 	}
 }

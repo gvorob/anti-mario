@@ -1,4 +1,5 @@
 particles = new Array();
+var cellSize = 8;
 
 particles.update = function(time){
 	for(var i = 0; i < this.length; i++)
@@ -56,7 +57,7 @@ function particleRock(pos, vel, lifetime){
 	this.draw = function(ctx){
 		ctx.fillStyle="#505020";
 		var temp = pos.clone();
-		temp.scale(32);
+		temp.scale(cellSize);
 		drawCircle(ctx,temp,3);
 	}
 }
@@ -87,7 +88,7 @@ function particleDust(pos, vel, size, drag, opacity, lifetime){
 	this.draw = function(ctx){
 		ctx.fillStyle="rgba(80,80,32," + this.opacity * this.lifetime / this.maxLife + ")";
 		var temp = pos.clone();
-		temp.scale(32);
+		temp.scale(cellSize);
 		drawCircle(ctx,temp,this.size);
 	}
 }
@@ -99,14 +100,16 @@ function particleDust(pos, vel, size, drag, opacity, lifetime){
 particles.doStomp = function(pos, speed){
 	var numParts = (10 + Math.floor(speed / 3)) * (1 + 0.3 * Math.random());
 	for(var i = 0; i < numParts; i++){
+		var temppos = pos.clone();
+		temppos.x += Math.random() * 2.5 - 1.25;
 		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.2);
-		vel.setLength(0.6 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5)));
-		var time = 1 * (1 + (Math.random() - 0.5));
-		var size = 1 + 0.6 * speed * (1 + (Math.random() - 0.5));
-		var opacity = 0.3 * (1 + (Math.random() -0.5));
+		vel.setLength(0.8 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5)));
+		var time = randOff(0.6, 0.5);// * (1 + (Math.random() - 0.5));
+		var size = 1 + 0.3 * speed * (1 + (Math.random() - 0.5));
+		var opacity = 0.2 * (1 + (Math.random() -0.5));
 		var drag = 3.8;
 			
-		particles.add(new particleDust(pos.clone(),vel, size, drag, opacity, time));
+		particles.add(new particleDust(temppos, vel, size, drag, opacity, time));
 	}
 }
 
@@ -150,7 +153,7 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 		ctx.fillStyle = this.col.createInterpolated(new color(355,355,355,0),timeScale);
 		
 		var temp = pos.clone();
-		temp.scale(32);
+		temp.scale(cellSize);
 		timeScale = Math.sqrt(timeScale);
 		drawCircle(ctx,temp, this.maxSize + (this.size - this.maxSize) * timeScale );
 	}
@@ -165,11 +168,11 @@ function jetpackEmitter(pos, offset){
 		this.numToSpawn += time * 120;
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
-			vel.setLength(randOff(8,0.2));
+			vel.setLength(randOff(32,0.2));
 			var time = randOff(0.5,0.5);
 			var size = randOff(6,0.5);
-			var maxSize = randOff(size * 2,0.5);
-			var opacity = 0.001;
+			var maxSize = randOff(size * 3,0.5);
+			var opacity = 0.002;
 			var drag = 3.5;
 			var r = 255//Math.random() * 55 + 200;
 			var g = Math.random() * 100 + 120;
@@ -240,7 +243,7 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 		ctx.fillStyle = this.col.create()//this.col.createInterpolated(new color(155,155,255,0),timeScale);
 		
 		var temp = pos.clone();
-		temp.scale(32);
+		temp.scale(cellSize);
 		timeScale = Math.sqrt(timeScale);
 		drawCircle(ctx,temp, this.maxSize + (this.size - this.maxSize) * timeScale );
 	}

@@ -1,4 +1,6 @@
 var gridData = new Array();
+var tempGrid = new Array();
+var cellSize = 8;
 
 gridData.fromVec = function(vec){
 	if(vec.x >= this.width || vec.x < 0 || vec.y >= this.height || vec.y < 0)
@@ -37,8 +39,11 @@ function setupGrid(){
 function createGrid(x,y){
 	gridData.width = x;
 	gridData.height = y;
+	tempGrid.width = x;
+	tempGrid.height = x;
 	for(var i = 0; i < x; i++){
-		gridData[i] = new Array()
+		gridData[i] = new Array();
+		tempGrid[i] = new Array();
 	}	
 }
 
@@ -49,8 +54,15 @@ function gridDraw(ctx){
 				ctx.fillStyle="#000"		       
 			else
 				ctx.fillStyle="#ccf"
-			ctx.strokeRect(i * 32, j * 32, 32, 32);
-			ctx.fillRect(i * 32, j * 32, 32, 32);
+			ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
+			ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+
+			if(tempGrid[i][j] != 0) {
+				ctx.fillStyle="#D3D"
+				ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
+				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+			}
+			tempGrid[i][j] = 0;
 		}
 	}
 }
