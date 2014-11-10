@@ -27,6 +27,7 @@ function start(){
 function update(){
 
 		
+
 	screenOffset.assign(player.bounds.pos);
 	screenOffset.scale(-cellSize);
 	screenOffset.add(250,250);
@@ -39,11 +40,13 @@ function update(){
 	player.update(30/1000);
 	particles.update(30/1000);
 	enemies.update(30/1000);
+
 	draw();
 }
 
 function draw(){
 			
+
 	ctx.clearRect(0,0,canvas.width,canvas.width);
 	ctx.strokeStyle="rgb(0,0,255)";
 	ctx.strokeRect(0,0,500,500);
@@ -52,7 +55,9 @@ function draw(){
 	ctx.translate(screenOffset.x, screenOffset.y);
 
 
+
 	gridDraw(ctx)
+
 	player.draw(ctx);
 	enemies.draw(ctx);
 	particles.draw(ctx);

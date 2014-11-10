@@ -48,23 +48,29 @@ function createGrid(x,y){
 }
 
 function gridDraw(ctx){
+	//console.time('before');
+	ctx.fillStyle="#ccf";
+	ctx.fillRect(0, 0, gridData.width * cellSize, gridData.height * cellSize);
+
+	ctx.fillStyle="#000";
 	for(var i = 0; i < gridData.width; i++){
 		for(var j = 0; j < gridData.height; j++){
 			if(gridData[i][j] == 0)
-				ctx.fillStyle="#000"		       
-			else
-				ctx.fillStyle="#ccf"
-			ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
-			ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+				ctx.fillRect(i * cellSize, j * cellSize, cellSize + 1, cellSize + 1);
+			//ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
 
+			/*
 			if(tempGrid[i][j] != 0) {
 				ctx.fillStyle="#D3D"
 				ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
 				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
 			}
 			tempGrid[i][j] = 0;
+			*/
 		}
 	}
+
+	//console.timeEnd('before');
 }
 
 function save(){
