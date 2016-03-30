@@ -35,7 +35,7 @@ function update(){
 	screenOffset.add(250,250);
 
 	if(keyState[67]){
-		enemies.add(new Slime(new bounds(player.bounds.pos.clone(),new Vector(0.5,0.5))));
+		enemies.add(new Slime(new bounds(player.bounds.pos.clone(),new Vector(2, 2))));
 		keyState[67] = false;
 	}
 

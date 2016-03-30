@@ -84,5 +84,5 @@ Slime.prototype.jump = function(){
 Slime.prototype.draw = function(ctx){
 	ctx.fillStyle = this.col.create();
 	debug = this.bounds
-	ctx.fillRect(this.bounds.pos.x * 32,this.bounds.pos.y * 32,this.bounds.size.x * 32,this.bounds.size.y * 32);
+	ctx.fillRect(this.bounds.pos.x * cellSize,this.bounds.pos.y * cellSize, this.bounds.size.x * cellSize,this.bounds.size.y * cellSize);
 }
