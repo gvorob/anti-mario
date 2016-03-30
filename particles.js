@@ -104,7 +104,7 @@ particles.doStomp = function(pos, speed){
 		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.2);
 		vel.setLength(0.8 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5)));
 		var time = randOff(0.6, 0.5);// * (1 + (Math.random() - 0.5));
-		var size = 1 + 0.3 * speed * (1 + (Math.random() - 0.5));
+		var size = (1 + 0.3 * speed * (1 + (Math.random() - 0.5))) / 8;
 		var opacity = 0.2 * (1 + (Math.random() -0.5));
 		var drag = 3.8;
 			
@@ -169,7 +169,7 @@ function jetpackEmitter(pos, offset){
 			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
 			vel.setLength(randOff(32,0.2));
 			var time = randOff(0.5,0.5);
-			var size = randOff(6,0.5);
+			var size = randOff(6/8,0.5/8);
 			var maxSize = randOff(size * 3,0.5);
 			var opacity = 0.002;
 			var drag = 3.5;
@@ -262,7 +262,7 @@ function waterSprayEmitter(){
 			var vel = new Vector(2.0 * facing,randOff(-0.6,0.1));
 			vel.setLength(randOff(15,0.2));
 			var time = randOff(1.5,0.5);
-			var size = randOff(16,0.5);
+			var size = randOff(2,0.0625);
 			var maxSize = 0//randOff(size * 2,0.5);
 			var drag = 0.3;
 			var g = Math.random() * 155 + 80;

@@ -89,6 +89,7 @@ function drawLine(context, startVector, changeVector){
 
 function drawCircle(context, location, radius)
 {
+	radius *= cellSize;
 	context.beginPath();
 	context.arc(location.x, location.y, radius, 0, 2 * Math.PI, true);
 	context.fill();
