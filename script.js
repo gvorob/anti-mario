@@ -9,7 +9,6 @@ $(function() { start();});
 function start(){
 	setupEventHandlers();
 
-	pause = setInterval(update,30);
 	canvas = $("#canvas").get(0);
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
@@ -24,15 +23,14 @@ function start(){
 		console.log(tile.x + " " + tile.y);
 	});
 	player = new player();
-	screenOffset = new Vector();
+	screenOffset = new Vector(0,0);
+
+	pause = setInterval(update,30);
 }
 
 
 function update(){
-
-		
-
-	screenOffset.assign(player.bounds.pos);
+	screenOffset.setV(player.bounds.pos);
 	screenOffset.scale(-cellSize);
 	screenOffset.add(250,250);
 

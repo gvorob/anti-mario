@@ -46,8 +46,8 @@ function particleRock(pos, vel, lifetime){
 		if(this.lifetime < 0)
 			this.isDead = true;
 		else{
-			this.vel.addScaledVec(time,new Vector(0,15));
-			this.pos.addScaledVec(time,vel);
+			this.vel.addScaledV(time,new Vector(0,15));
+			this.pos.addScaledV(time,vel);
 			if(gridData.fromVec(this.pos) == 0)
 				this.isDead = true;
 		}
@@ -78,7 +78,7 @@ function particleDust(pos, vel, size, drag, opacity, lifetime){
 			this.isDead = true;
 		else{
 			this.vel.scale(1 - this.drag * time);
-			this.pos.addScaledVec(time,vel);
+			this.pos.addScaledV(time,vel);
 			if(gridData.fromVec(this.pos) == 0)
 				this.isDead = true;
 		}
@@ -140,7 +140,7 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 			this.isDead = true;
 		else{
 			this.vel.scale(1 - this.drag * time);
-			this.pos.addScaledVec(time,vel);
+			this.pos.addScaledV(time,vel);
 			if(gridData.fromVec(this.pos) == 0)
 				this.isDead = true;
 		}
@@ -178,7 +178,7 @@ function jetpackEmitter(pos, offset){
 			var col = new color(r, r * g / 255,0, 0.5);
 
 			var temp = this.pos.clone();
-			temp.addVec(this.offset);	
+			temp.addV(this.offset);	
 			particles.add(new particleExhaust(temp, vel, size / 2, maxSize, drag, col, opacity, time));
 		}
 	};
@@ -228,7 +228,7 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 
 			var enemyHere = enemies.getHere(this.pos)
 			if(enemyHere != null){
-				enemyHere.bounds.vel.addScaledVec(this.lifetime / this.maxLife / 10, this.vel );
+				enemyHere.bounds.vel.addScaledV(this.lifetime / this.maxLife / 10, this.vel );
 				//enemyHere.isDead = true;
 				this.isDead = true;
 			}
@@ -250,7 +250,7 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 
 
 function waterSprayEmitter(){
-	this.pos = new Vector();
+	this.pos = new Vector(0,0);
 	this.facing = false;//left
 	this.numToSpawn = 0;
 
