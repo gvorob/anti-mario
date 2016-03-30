@@ -1,5 +1,3 @@
-var cellSize = 8;
-
 function player(){
 	this.bounds = new bounds(new Vector(2,1), new Vector(2.5,4.5));
 

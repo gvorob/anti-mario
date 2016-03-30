@@ -1,6 +1,5 @@
 var gridData = new Array();
 var tempGrid = new Array();
-var cellSize = 8;
 
 gridData.fromVec = function(vec){
 	if(vec.x >= this.width || vec.x < 0 || vec.y >= this.height || vec.y < 0)

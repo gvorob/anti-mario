@@ -45,7 +45,6 @@ enemies.getHere = function(pos){
 
 function Slime(bounds){
 	this.bounds = bounds;
-
 	
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed / 2);
@@ -75,7 +74,6 @@ Slime.prototype.update = function(time){
 			this.jumpDelay = -1;
 		}
 	}
-
 }
 
 Slime.prototype.jump = function(){

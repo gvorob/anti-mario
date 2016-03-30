@@ -1,5 +1,4 @@
 particles = new Array();
-var cellSize = 8;
 
 particles.update = function(time){
 	for(var i = 0; i < this.length; i++)
