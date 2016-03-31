@@ -11,29 +11,26 @@ enemies.update = function(time){
 	}
 }
 
-enemies.draw = function(ctx){
-	for(var i = 0; i < this.length; i++)
-	{
-		if(this[i] != null){
-			this[i].draw(ctx);
-		}
+enemies.draw = function(ctx) {
+	for(var i = 0; i < this.length; i++) {
+		if(this[i] != null)
+			{this[i].draw(ctx);}
 	}
 }
 
-enemies.add = function(part){
+enemies.add = function(part) {
 	var i;
-	for(i = 0; i < this.length && i != -1; i++)
-	{
+	for(i = 0; i < this.length && i != -1; i++) {
 		if(this[i] == null){
 			this[i] = part;
 			i = -2;
 		}
 	}
-	if(i != -1){//was not added
-		this[this.length] = part;
-	}
+	if(i != -1) //was not added (need to grow)
+		{this[this.length] = part;}
 }
 
+//get all enemies intersecting a point
 enemies.getHere = function(pos){
 	for(var i = 0; i < this.length; i++){
 		if(this[i] != null)
@@ -45,7 +42,6 @@ enemies.getHere = function(pos){
 
 function Slime(bounds){
 	this.bounds = bounds;
-	
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed / 2);
 	}
