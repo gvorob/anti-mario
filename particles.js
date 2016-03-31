@@ -1,3 +1,4 @@
+var Constants = Constants || {};
 particles = new Array();
 
 particles.update = function(time){
@@ -158,21 +159,30 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 	}
 }
 
+
+Constants.jetpack = {};
+{
+	var j = Constants.jetpack;
+	j.scale = 0.5;
+}
 function jetpackEmitter(pos, offset){
 	this.pos = pos;
 	this.offset = offset;
 	this.numToSpawn = 0;
+	
+	var scale = Constants.jetpack.scale;
+
 
 	this.update = function(time){
 		this.numToSpawn += time * 120;
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
-			vel.setLength(randOff(32,0.2));
+			vel.setLength(randOff(32,0.2) * scale);
 			var time = randOff(0.5,0.5);
-			var size = randOff(6/8,0.5/8);
-			var maxSize = randOff(size * 3,0.5);
+			var size = randOff(6/8,0.5/8) * scale;
+			var maxSize = randOff(size * 3,0.5) * scale;
 			var opacity = 0.002;
-			var drag = 3.5;
+			var drag = 4.5;
 			var r = 255//Math.random() * 55 + 200;
 			var g = Math.random() * 100 + 120;
 			var col = new color(r, r * g / 255,0, 0.5);

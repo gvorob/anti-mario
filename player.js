@@ -3,14 +3,14 @@ var Constants = Constants || {};
 	Constants.player = {};
 	var p = Constants.player;
 
-	p.size                = new Vector(2.5,  4.5);
-	p.movespeed           = 12;
-	p.gravity             = 50;
-	p.jumpspeed           = 17;
-	p.jetpackspeed        = 8;
+	p.size                = new Vector(0.7,  0.8);
+	p.movespeed           = 5;
+	p.gravity             = 30;
+	p.jumpspeed           = 12;
+	p.jetpackspeed        = 4;
 	p.jetpackOffset       = [
-			new Vector(0.1            , 0.8),
-			new Vector(-0.1 + p.size.x, 0.8),
+			new Vector(0.1            , 0.3),
+			new Vector(-0.1 + p.size.x, 0.3),
 			];
 	p.waterCannonOffset   = [
 			new Vector(-0.25 + p.size.x, 0.4),

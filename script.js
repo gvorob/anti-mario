@@ -2,7 +2,7 @@ var canvas, ctx;
 var player;
 var screenOffset;
 var pause;
-var cellSize = 8;
+var cellSize = 32;
 
 $(function() { start();});
 
