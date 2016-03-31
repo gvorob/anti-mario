@@ -89,5 +89,5 @@ function load(inString){
 	gridData.height = parseInt(result[1]);
 	createGrid(gridData.width,gridData.height);
 	result = result[2];
-	forEachIn(function(i,j){gridData[i][j] = result[j + i * gridData.height];});
+	forEachIn(function(i,j){gridData[i][j] = parseInt(result[j + i * gridData.height]);});
 }

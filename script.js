@@ -9,17 +9,21 @@ $(function() { start();});
 function start(){
 	setupEventHandlers();
 
-	canvas = $("#canvas").get(0);
+	j_canvas = $("#canvas");
+	canvas = j_canvas.get(0);
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
 	//setupGrid()
 	load($('#levelData').text());
 
 	canvas.addEventListener('click', function(event){
-		var tile = new Vector((event.layerX - screenOffset.x) / cellSize, (event.layerY - screenOffset.y) / cellSize);	
-		tile.x--;
-		tile.y--;
-		gridData.setFromVec(tile, gridData.fromVec(tile) * -1 + 1);
+		var mClick = getCanvasClick(j_canvas, event)
+		var tile = pixelCoordsToWorldCoords(mClick);
+		var oldTileVal = gridData.fromVec(tile);
+
+		console.log(typeof(oldTileVal), (!oldTileVal)|0)
+		console.log(oldTileVal, (!oldTileVal)|0)
+		gridData.setFromVec(tile, (!oldTileVal)|0);
 		console.log(tile.x + " " + tile.y);
 	});
 	player = new player();
@@ -28,6 +32,18 @@ function start(){
 	pause = setInterval(update,30);
 }
 
+//Returns a vector with canvas click coords
+function getCanvasClick(j_canvas, event) {
+	var rect = j_canvas.get(0).getBoundingClientRect();
+	var x = event.clientX - rect.left;
+	var y = event.clientY - rect.top;
+	return new Vector(x, y);
+}
+
+//Uses screenOffset and cellSize to convert
+function pixelCoordsToWorldCoords(p_vec) {
+	return new Vector((p_vec.x - screenOffset.x) / cellSize, (p_vec.y - screenOffset.y) / cellSize);	
+}
 
 function update(){
 	screenOffset.setV(player.bounds.pos);
