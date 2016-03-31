@@ -1,19 +1,39 @@
+var Constants = Constants || {};
+{
+	Constants.player = {};
+	var p = Constants.player;
+
+	p.size                = new Vector(2.5,  4.5);
+	p.movespeed           = 12;
+	p.gravity             = 50;
+	p.jumpspeed           = 17;
+	p.jetpackspeed        = 8;
+	p.jetpackOffset       = [
+			new Vector(0.1            , 0.8),
+			new Vector(-0.1 + p.size.x, 0.8),
+			];
+	p.waterCannonOffset   = [
+			new Vector(-0.25 + p.size.x, 0.4),
+			new Vector( 0.25           , 0.4),
+			];
+}
+
 function player(){
-	this.bounds = new bounds(new Vector(2,1), new Vector(2.5,4.5));
+	this.bounds = new bounds(new Vector(2,1), Constants.player.size.clone());
 
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed);
 	}
 
-	this.offset = new Vector(-0.1,0.8);
+	this.offset = Constants.player.jetpackOffset[0].clone();
 	this.pack = new jetpackEmitter(this.bounds.pos, this.offset);
 	this.waterCannon = new waterSprayEmitter();
 	this.facing = 1;
 
-	this.movespeed = 12;
-	this.gravity = 50;
-	this.jumpspeed = 17;
-	this.jetpackspeed = 8;
+	this.movespeed    = Constants.player.movespeed;
+	this.gravity      = Constants.player.gravity;
+	this.jumpspeed    = Constants.player.jumpspeed;
+	this.jetpackspeed = Constants.player.jetpackspeed;
 
 
 	this.jumpState = 0;
@@ -60,14 +80,18 @@ function player(){
 
 		if(keyState[88]){
 			var temp = this.bounds.pos.clone();
-			temp.add(0.25,0.4);
+			temp.addV(Constants.player.waterCannonOffset[this.getFacingIndex()]);
 			this.waterCannon.update(time,temp,this.facing);
 		}
 
 		if(this.bounds.vel.x != 0)
-			this.offset.x = this.facing>0?-0.1:2.6;
+			this.offset.setV(Constants.player.jetpackOffset[this.getFacingIndex()]);
 		this.bounds.move(time);
 	}
+
+	//returns 0 if facing right, 1 otherwise
+	this.getFacingIndex = function() 
+		{return this.facing>0?0:1;}
 
 	this.draw = function(ctx){
 		ctx.fillStyle="#88F";
