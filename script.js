@@ -29,7 +29,7 @@ function start(){
 	player = new player();
 	screenOffset = new Vector(0,0);
 
-	pause = setInterval(update,30);
+	pause = setInterval(update,20);
 }
 
 //Returns a vector with canvas click coords
@@ -55,9 +55,10 @@ function update(){
 		keyState[67] = false;
 	}
 
-	player.update(30/1000);
-	particles.update(30/1000);
-	enemies.update(30/1000);
+	var stepTime = 20/1000;
+	player.update(stepTime);
+	particles.update(stepTime);
+	enemies.update(stepTime);
 
 	draw();
 }
