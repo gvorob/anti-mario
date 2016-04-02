@@ -1,4 +1,6 @@
 var Constants = Constants || {};
+Constants.particles = {};
+Constants.particles.scale = 0.5;
 particles = new Array();
 
 particles.update = function(time){
@@ -99,13 +101,15 @@ function particleDust(pos, vel, size, drag, opacity, lifetime){
 
 particles.doStomp = function(pos, speed){
 	var numParts = (10 + Math.floor(speed / 3)) * (1 + 0.3 * Math.random());
+	var scale = Constants.particles.scale;
+
 	for(var i = 0; i < numParts; i++){
 		var temppos = pos.clone();
-		temppos.x += Math.random() * 2.5 - 1.25;
+		temppos.x += (Math.random() * 2.5 - 1.25) * scale;
 		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.2);
-		vel.setLength(0.8 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5)));
+		vel.setLength((0.8 * Math.sqrt(Math.abs(speed) - 1) * (1 + 0.5 * (Math.random() - 0.5))) * scale);
 		var time = randOff(0.6, 0.5);// * (1 + (Math.random() - 0.5));
-		var size = (1 + 0.3 * speed * (1 + (Math.random() - 0.5))) / 8;
+		var size = (1 + 0.3 * speed * (1 + (Math.random() - 0.5))) / 8 * scale;
 		var opacity = 0.2 * (1 + (Math.random() -0.5));
 		var drag = 3.8;
 			
@@ -160,17 +164,12 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 }
 
 
-Constants.jetpack = {};
-{
-	var j = Constants.jetpack;
-	j.scale = 0.5;
-}
 function jetpackEmitter(pos, offset){
 	this.pos = pos;
 	this.offset = offset;
 	this.numToSpawn = 0;
 	
-	var scale = Constants.jetpack.scale;
+	var scale = Constants.particles.scale;
 
 
 	this.update = function(time){
@@ -266,13 +265,14 @@ function waterSprayEmitter(){
 
 	this.update = function(time, pos, facing){
 
+		var scale = Constants.particles.scale;
 
 		this.numToSpawn += time * 100;
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(2.0 * facing,randOff(-0.6,0.1));
-			vel.setLength(randOff(15,0.2));
+			vel.setLength(randOff(18,0.3) * scale);
 			var time = randOff(1.5,0.5);
-			var size = randOff(2,0.0625);
+			var size = randOff(2,0.0625) * scale;
 			var maxSize = 0//randOff(size * 2,0.5);
 			var drag = 0.3;
 			var g = Math.random() * 155 + 80;
