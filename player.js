@@ -12,7 +12,7 @@ var Constants = Constants || {};
 			BUTTON_IN_AIR: 2,
 			},
 		jetpackspeed        : 4,
-		jetpackburst        : 0.1,
+		jetpackburst        : 0.4,
 		jetpackburstspeed   : -12,
 		jetpackOffset       : [
 			new Vector(-0.05            , 0),

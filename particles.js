@@ -202,7 +202,8 @@ function jetpackEmitter(pos, offset){
 
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var p = this.genParams();
-			p.vel.setLength(randOff(32, 0.6) * scale);
+			p.vel = new Vector(randRange(-0.5, 0.5) , 2.0);
+			p.vel.setLength(randOff(36, 0.4) * scale);
 
 			var pos = startPos.clone();
 			//keep them from stacking up
