@@ -144,10 +144,19 @@ function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
 		if(this.lifetime < 0)
 			this.isDead = true;
 		else{
+			//slow down
 			this.vel.scale(1 - this.drag * time);
+			//move
 			this.pos.addScaledV(time,vel);
-			if(gridData.fromVec(this.pos) == 0)
-				this.isDead = true;
+
+			//collide
+			if(gridData.fromVec(this.pos) == 0) {
+				var dir = randPosNeg();
+				//move back
+				this.pos.addScaledV(-time,vel)
+				this.vel.rotate(dir * Math.PI / 2 * randRange(1, 1.2));
+				this.pos.addScaledV(time, vel);
+			}
 		}
 	}
 	
@@ -311,3 +320,5 @@ function color(r,g,b,a){
 function randRange(a, b) { return Math.random() * (b - a) + a; }
 //scales a number randomly by 1 +/- offset
 function randOff(num, offset){return randRange(num * (1 - offset), num * (1 + offset));}
+//randomly gives 1 or -1
+function randPosNeg() { return Math.random() > 0.5 ? 1 : -1; }
