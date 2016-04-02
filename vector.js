@@ -36,6 +36,14 @@ Vector.prototype.setLength = function(len){
 	return this;
 }
 
+//rotates CCW
+Vector.prototype.rotate = function(rads) {
+	var newX = Math.cos(rads) * this.x - Math.sin(rads) * this.y;
+	var newY = Math.sin(rads) * this.x + Math.cos(rads) * this.y;
+	this.x = newX;
+	this.y = newY;
+}
+
 Vector.prototype.setV = function(otherVect){
 	this.x = otherVect.x;
 	this.y = otherVect.y;
