@@ -62,20 +62,25 @@ function player(){
 
 		//On ground
 		if(this.bounds.onGround){
+			//reset keys
 			if(this.jumpState === s.BUTTON_IN_AIR)
 				this.jumpState = s.NOT_PRESSED;
-			if(jumpKey && this.jumpState === s.NOT_PRESSED)
-			{
+			if(!jumpKey)
+				{ this.jumpState = s.NOT_PRESSED; }
+
+			//Do normal jump
+			else if(jumpKey && this.jumpState === s.NOT_PRESSED) {
 				this.jumpState = s.BUTTON;
 				this.bounds.vel.y = -1 * this.jumpspeed;
 			}
-			if(!jumpKey)
-				this.jumpState = 0;
+
 		} 
 		//In air
 		else{
 			if(!jumpKey) //Reset button
 				{ this.jumpState = s.NOT_PRESSED; }
+
+			//do jetpack, unless is normal jump and not yet been released
 			else if(jumpKey && this.jumpState != s.BUTTON){
 				this.jumpState = s.BUTTON_AIR;
 				this.bounds.vel.y = -1 * this.jetpackspeed;
