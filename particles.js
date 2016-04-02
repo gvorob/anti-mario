@@ -284,6 +284,7 @@ function waterSprayEmitter(){
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(2.0 * facing,randOff(-0.6,0.1));
 			vel.setLength(randOff(18,0.3) * scale);
+			//vel.addV(player.bounds.vel);
 			var time = randOff(1.5,0.5);
 			var size = randOff(2,0.0625) * scale;
 			var maxSize = 0//randOff(size * 2,0.5);

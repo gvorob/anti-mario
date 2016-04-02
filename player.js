@@ -1,21 +1,26 @@
 var Constants = Constants || {};
 {
-	Constants.player = {};
-	var p = Constants.player;
-
-	p.size                = new Vector(0.7,  0.8);
-	p.movespeed           = 5;
-	p.gravity             = 30;
-	p.jumpspeed           = 12;
-	p.jetpackspeed        = 4;
-	p.jetpackOffset       = [
+	var tempSize = new Vector(0.7, 0.8);
+	Constants.player = {
+		size                : tempSize,
+		movespeed           : 5,
+		gravity             : 30,
+		jumpspeed           : 12,
+		jumpstates          : {
+			NOT_PRESSED: 0,
+			BUTTON:  1,
+			BUTTON_IN_AIR: 2,
+			},
+		jetpackspeed        : 4,
+		jetpackOffset       : [
 			new Vector(0.1            , 0),
-			new Vector(-0.1 + p.size.x, 0),
-			];
-	p.waterCannonOffset   = [
-			new Vector(-0.25 + p.size.x, 0.4),
-			new Vector( 0.25           , 0.4),
-			];
+			new Vector(-0.1 + tempSize.x, 0),
+			],
+		waterCannonOffset   : [
+				new Vector(-0.25 + tempSize.x, 0.4),
+				new Vector( 0.25           , 0.4),
+				],
+	};
 }
 
 function player(){
@@ -35,11 +40,11 @@ function player(){
 	this.jumpspeed    = Constants.player.jumpspeed;
 	this.jetpackspeed = Constants.player.jetpackspeed;
 
-
-	this.jumpState = 0;
+	var s = Constants.player.jumpstates;
+	this.jumpState = s.NOT_PRESSED;
 	//0 is nothing pressed
 	//1 is button has been pressed
-	//2 is button has been pressed in air
+	//2 is button has been pressed / in air
 	this.update = function(time){
 		var jumpKey = keyState[87] || keyState[38] || keyState[90];
 
@@ -55,24 +60,24 @@ function player(){
 			this.facing = this.bounds.vel.x>0?1:-1;
 		
 
-
+		//On ground
 		if(this.bounds.onGround){
-			if(this.jumpState == 2)
-				this.jumpState = 1;
-			if(jumpKey && this.jumpState == 0)
+			if(this.jumpState === s.BUTTON_IN_AIR)
+				this.jumpState = s.NOT_PRESSED;
+			if(jumpKey && this.jumpState === s.NOT_PRESSED)
 			{
-				this.jumpState = 1;
+				this.jumpState = s.BUTTON;
 				this.bounds.vel.y = -1 * this.jumpspeed;
 			}
 			if(!jumpKey)
 				this.jumpState = 0;
-		}
+		} 
+		//In air
 		else{
-			if(!jumpKey){
-				this.jumpState = 0;
-			}
-			else if(jumpKey && this.jumpState != 1){
-				this.jumpState = 2;
+			if(!jumpKey) //Reset button
+				{ this.jumpState = s.NOT_PRESSED; }
+			else if(jumpKey && this.jumpState != s.BUTTON){
+				this.jumpState = s.BUTTON_AIR;
 				this.bounds.vel.y = -1 * this.jetpackspeed;
 				this.pack.update(time);
 			}

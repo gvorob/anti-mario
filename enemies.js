@@ -53,18 +53,19 @@ function Slime(bounds){
 }
 
 Slime.prototype.update = function(time){
-	this.bounds.vel.add(0,25 * time);		
+	//Gravity
+	this.bounds.vel.add(0, 25 * time);		
 
 	this.bounds.move(time);
 
-	if(!this.bounds.onGround){
-		this.jumpDelay = -1;
-	}
+	//handle jumping/jumping AI
+	if(!this.bounds.onGround)
+		{ this.jumpDelay = -1; }
 	else{//on the ground, counting down
 		if(this.jumpDelay == -1)
-			this.jumpDelay = randOff(1,0.2);
-		this.jumpDelay -= time
-		this.bounds.vel.x -= time * this.bounds.vel.x * 0.9
+			{ this.jumpDelay = randOff(1,0.2); }
+		this.jumpDelay -= time;
+		this.bounds.vel.x -= time * this.bounds.vel.x * 0.9;
 		if(this.jumpDelay < 0){
 			this.jump();
 			this.jumpDelay = -1;
