@@ -174,10 +174,13 @@ function jetpackEmitter(pos, offset){
 
 	this.update = function(time){
 		this.numToSpawn += time * 120;
+		var startPos = this.pos.clone();
+		startPos.addV(this.offset);	
+
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
 			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
 			vel.setLength(randOff(32,0.2) * scale);
-			var time = randOff(0.5,0.5);
+			var survivalTime = randOff(0.5,0.5);
 			var size = randOff(6/8,0.5/8) * scale;
 			var maxSize = randOff(size * 3,0.5) * scale;
 			var opacity = 0.002;
@@ -186,9 +189,10 @@ function jetpackEmitter(pos, offset){
 			var g = Math.random() * 100 + 120;
 			var col = new color(r, r * g / 255,0, 0.5);
 
-			var temp = this.pos.clone();
-			temp.addV(this.offset);	
-			particles.add(new particleExhaust(temp, vel, size / 2, maxSize, drag, col, opacity, time));
+			var pos = startPos.clone();
+			//keep them from stacking up
+			pos.addScaledV(0.5 * randRange(-time,time), vel);
+			particles.add(new particleExhaust(pos, vel, size / 2, maxSize, drag, col, opacity, survivalTime));
 		}
 	};
 
@@ -303,4 +307,7 @@ function color(r,g,b,a){
 	}
 }
 
-function randOff(num, offset){return num * (1 + offset * (Math.random() * 2 - 1));}
+//inclusive random in range
+function randRange(a, b) { return Math.random() * (b - a) + a; }
+//scales a number randomly by 1 +/- offset
+function randOff(num, offset){return randRange(num * (1 - offset), num * (1 + offset));}

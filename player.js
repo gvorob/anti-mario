@@ -9,8 +9,8 @@ var Constants = Constants || {};
 	p.jumpspeed           = 12;
 	p.jetpackspeed        = 4;
 	p.jetpackOffset       = [
-			new Vector(0.1            , 0.3),
-			new Vector(-0.1 + p.size.x, 0.3),
+			new Vector(0.1            , 0),
+			new Vector(-0.1 + p.size.x, 0),
 			];
 	p.waterCannonOffset   = [
 			new Vector(-0.25 + p.size.x, 0.4),
