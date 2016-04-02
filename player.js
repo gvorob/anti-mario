@@ -12,9 +12,11 @@ var Constants = Constants || {};
 			BUTTON_IN_AIR: 2,
 			},
 		jetpackspeed        : 4,
+		jetpackburst        : 0.1,
+		jetpackburstspeed   : -12,
 		jetpackOffset       : [
-			new Vector(0.1            , 0),
-			new Vector(-0.1 + tempSize.x, 0),
+			new Vector(-0.05            , 0),
+			new Vector(0.05 + tempSize.x, 0),
 			],
 		waterCannonOffset   : [
 				new Vector(-0.25 + tempSize.x, 0.4),
@@ -42,25 +44,30 @@ function player(){
 
 	var s = Constants.player.jumpstates;
 	this.jumpState = s.NOT_PRESSED;
-	//0 is nothing pressed
-	//1 is button has been pressed
-	//2 is button has been pressed / in air
+
 	this.update = function(time){
 		var jumpKey = keyState[87] || keyState[38] || keyState[90];
 
 		this.bounds.vel.add(0, this.gravity * time);
 		this.bounds.vel.x = 0;	
+		
+		//Move left
 		if(keyState[37] || keyState[65])
 			this.bounds.vel.x = -1 * this.movespeed;
 			
+		//Move right
 		if(keyState[39] || keyState[68])
 			this.bounds.vel.x += this.movespeed;
 
-		if(this.bounds.vel.x != 0)//sets facing
-			this.facing = this.bounds.vel.x>0?1:-1;
+		this.bounds.move(time);
 		
+		//Update facing (for jetpack mount point)
+		if(this.bounds.vel.x != 0) {
+			this.facing = this.bounds.vel.x>0?1:-1;
+			this.offset.setV(Constants.player.jetpackOffset[this.getFacingIndex()]);
+		}
 
-		//On ground
+		//Handle jump (On ground)
 		if(this.bounds.onGround){
 			//reset keys
 			if(this.jumpState === s.BUTTON_IN_AIR)
@@ -75,28 +82,32 @@ function player(){
 			}
 
 		} 
-		//In air
+
+		//Handle jump (In air)
 		else{
 			if(!jumpKey) //Reset button
 				{ this.jumpState = s.NOT_PRESSED; }
 
 			//do jetpack, unless is normal jump and not yet been released
 			else if(jumpKey && this.jumpState != s.BUTTON){
+				if(this.jumpState === s.NOT_PRESSED) {//if just started
+					this.pack.burst(Constants.player.jetpackburst); 
+					this.bounds.vel.y = Constants.player.jetpackburstspeed + this.jetpackspeed;
+				}
 				this.jumpState = s.BUTTON_AIR;
-				this.bounds.vel.y = -1 * this.jetpackspeed;
+				this.bounds.vel.y = Math.min(this.bounds.vel.y, -1 * this.jetpackspeed);
 				this.pack.update(time);
 			}
 		}	
 
+		//Water cannon
 		if(keyState[88]){
 			var temp = this.bounds.pos.clone();
 			temp.addV(Constants.player.waterCannonOffset[this.getFacingIndex()]);
 			this.waterCannon.update(time,temp,this.facing);
 		}
 
-		if(this.bounds.vel.x != 0)
-			this.offset.setV(Constants.player.jetpackOffset[this.getFacingIndex()]);
-		this.bounds.move(time);
+
 	}
 
 	//returns 0 if facing right, 1 otherwise

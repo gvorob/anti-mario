@@ -127,13 +127,12 @@ particles.doRocks = function(pos, speed){
 	}
 }
 
-function particleExhaust(pos, vel, size, maxSize, drag, col, opacity, lifetime){
+function particleExhaust(pos, vel, size, maxSize, drag, col, lifetime){
 	this.pos = pos;
 	this.vel = vel;
 	this.size = size;
 	this.maxSize = maxSize;
 	this.drag = drag;
-	this.opacity = opacity;
 	this.lifetime = lifetime;
 	this.maxLife = lifetime;
 	this.col = col;
@@ -177,31 +176,53 @@ function jetpackEmitter(pos, offset){
 	this.pos = pos;
 	this.offset = offset;
 	this.numToSpawn = 0;
+	this.spawnRate = 120; //particles per second
 	
 	var scale = Constants.particles.scale;
 
+	this.genParams = function(time) {
+		var p = {};
+		p.vel = new Vector(randRange(-0.35, 0.35) , 2.0);
+		p.vel.setLength(randOff(32,0.2) * scale);
+		p.survivalTime = randOff(0.5,0.5);
+		p.size = randOff(6/8,0.5) * scale;
+		p.maxSize = randOff(p.size * 3,0.5) * scale;
+		p.drag = 4.5;
+		p.r = 255//Math.random() * 55 + 200;
+		p.g = Math.random() * 100 + 120;
+		p.col = new color(p.r, p.r * p.g / 255,0, 0.6);
+		return p;
+	}
 
-	this.update = function(time){
-		this.numToSpawn += time * 120;
+	this.burst = function(x) {
+		var time = 20/1000;
+		this.numToSpawn += x * this.spawnRate;
 		var startPos = this.pos.clone();
 		startPos.addV(this.offset);	
 
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
-			var vel = new Vector(Math.random() * 0.5 - 0.25, 2.0);
-			vel.setLength(randOff(32,0.2) * scale);
-			var survivalTime = randOff(0.5,0.5);
-			var size = randOff(6/8,0.5/8) * scale;
-			var maxSize = randOff(size * 3,0.5) * scale;
-			var opacity = 0.002;
-			var drag = 4.5;
-			var r = 255//Math.random() * 55 + 200;
-			var g = Math.random() * 100 + 120;
-			var col = new color(r, r * g / 255,0, 0.5);
+			var p = this.genParams();
+			p.vel.setLength(randOff(32, 0.6) * scale);
 
 			var pos = startPos.clone();
 			//keep them from stacking up
-			pos.addScaledV(0.5 * randRange(-time,time), vel);
-			particles.add(new particleExhaust(pos, vel, size / 2, maxSize, drag, col, opacity, survivalTime));
+			pos.addScaledV(0.5 * randRange(-time,time), p.vel);
+			particles.add(new particleExhaust(pos, p.vel, p.size / 2, p.maxSize, p.drag, p.col, p.survivalTime));
+		}
+	}
+
+	this.update = function(time){
+		this.numToSpawn += time * this.spawnRate;
+		var startPos = this.pos.clone();
+		startPos.addV(this.offset);	
+
+		for(;this.numToSpawn >= 1; this.numToSpawn--){
+			var p = this.genParams();
+
+			var pos = startPos.clone();
+			//keep them from stacking up
+			pos.addScaledV(0.5 * randRange(-time,time), p.vel);
+			particles.add(new particleExhaust(pos, p.vel, p.size / 2, p.maxSize, p.drag, p.col, p.survivalTime));
 		}
 	};
 
