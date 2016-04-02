@@ -21,10 +21,7 @@ function start(){
 		var tile = pixelCoordsToWorldCoords(mClick);
 		var oldTileVal = gridData.fromVec(tile);
 
-		console.log(typeof(oldTileVal), (!oldTileVal)|0)
-		console.log(oldTileVal, (!oldTileVal)|0)
 		gridData.setFromVec(tile, (!oldTileVal)|0);
-		console.log(tile.x + " " + tile.y);
 	});
 	player = new player();
 	screenOffset = new Vector(0,0);
@@ -51,7 +48,11 @@ function update(){
 	screenOffset.add(250,250);
 
 	if(keyState[67]){
-		enemies.add(new Slime(new bounds(player.bounds.pos.clone(),new Vector(2, 2))));
+		var tempBounds = new bounds(
+			player.bounds.pos.clone(), 
+			Constants.enemies.slimes.size
+		);
+		enemies.add(new Slime(tempBounds));
 		keyState[67] = false;
 	}
 
@@ -77,9 +78,9 @@ function draw(){
 
 	gridDraw(ctx)
 
-	player.draw(ctx);
 	enemies.draw(ctx);
 	particles.draw(ctx);
+	player.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);

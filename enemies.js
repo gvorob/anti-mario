@@ -1,3 +1,10 @@
+var Constants = Constants || {};
+Constants.enemies = {
+	slimes: {
+		size: new Vector(0.7, 0.7),
+	},
+};
+
 var enemies = new Array();
 
 enemies.update = function(time){
