@@ -18,6 +18,11 @@ Vector.floor = function(v){
 	return new Vector(Math.floor(v.x), Math.floor(v.y));
 }
 
+//returns y/x (or infinity)
+Vector.prototype.getSlope = function() {
+	return this.y / this.x;
+}
+
 Vector.prototype.getLength = function(){
 	return Math.sqrt(this.x * this.x + this.y * this.y);
 }
@@ -27,6 +32,7 @@ Vector.prototype.scale = function(a){
 	this.y *= a;
 	return this;
 }
+
 
 Vector.prototype.setLength = function(len){
 	this.scale(len / this.getLength());

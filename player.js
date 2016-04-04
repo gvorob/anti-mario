@@ -86,18 +86,38 @@ player.prototype.update = function(time){
 }
 
 player.prototype.handleCollisions = function(time) {
+	var that = this;
 	var collidedEnemies = enemies.getColliding(this.bounds);
 
+	/*
 	debugDraw(function(ctx) {
 			ctx.fillStyle="#2B2";
 			for(var i = 0; i < collidedEnemies.length; i++) {
 				collidedEnemies[i].bounds.draw(ctx);
 			}
 		});
-	//check all enemies to see if there is overlap
+	*/
+	//check all enemies to see if we collide with any
 	
-	//If there is, check velocity and stuff to see
-	//Whether you hit from the top or sides
+	if(collidedEnemies.length != 0) {
+		//If there is, check velocity and stuff to see
+		//Whether you hit from the top or sides
+		var amDead = false;
+		collidedEnemies.forEach(function (el, i, arr) {
+				//If landed on top
+				if(that.bounds.checkCollidedTop(el.bounds)) {
+					if(el.die) //kill it
+						el.die();
+				} else {
+					amDead = true;
+				}
+			});
+
+		//bounce
+		this.bounds.vel.y = -10;
+
+		console.log(amDead);
+	}
 }
 
 player.prototype.handleJumping = function(jumpKeyState, time) {

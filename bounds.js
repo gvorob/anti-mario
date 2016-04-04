@@ -12,6 +12,7 @@ bounds.prototype.contains = function(pos){
 		   pos.y < this.pos.y + this.size.y;
 }
 
+//check if collides with other bounding box
 bounds.prototype.collidesWith = function(other) {
 	var missedX = this.getRight() < other.getLeft() ||
 	              this.getLeft() > other.getRight();
@@ -20,6 +21,52 @@ bounds.prototype.collidesWith = function(other) {
 	              this.getBottom() < other.getTop();
 
 	return !missedX && !missedY;
+}
+
+//checks if this hit other box from top (false if from side or bot)
+//Assumes that they collide
+bounds.prototype.checkCollidedTop = function(other) {
+	var relVel = this.vel.clone().subtractV(other.vel);
+
+	if(relVel.y < 0) { return false; } //came in from below
+
+	var my_corner;
+	var ot_corner; //other corner
+
+	if(relVel.x > 0) { //I'm going to the right
+		ot_corner = other.getTopLeft();
+		my_corner = this.getBottomRight();
+	} else {           //I'm going to the left
+		ot_corner = other.getTopRight();
+		my_corner = this.getBottomLeft();
+	}
+
+	//my_corner is inside 'other'
+	//cD is displacement from ot_corner to my_corner
+	var cornerDisplacement = my_corner.subtractV(ot_corner);
+
+
+	//if relVel is angled down more than cornerDisplacement,
+	//then we came in from above
+	
+	//Make them go left to right
+	relVel.x = Math.abs(relVel.x);
+	cornerDisplacement.x = Math.abs(cornerDisplacement.x);
+
+	//check for vertical vectors
+	var epsilon = 0.0001
+	if(cornerDisplacement.x < epsilon) { return false; } //just barely grazed the side
+	if(relVel.x < epsilon) { return true; } //came in vertically
+
+	//normalize
+	cornerDisplacement.setLength(1);
+	relVel.setLength(1);
+
+
+	//console.log(relVel.getSlope(), cornerDisplacement.getSlope());
+
+
+	return cornerDisplacement.getSlope() < relVel.getSlope();
 }
 
 bounds.prototype.getTop    = function(){return this.pos.y}

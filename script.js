@@ -67,6 +67,7 @@ var debugDraw = function(drawFunc) {
 	debugDraw.queue = debugDraw.queue || [];
 	debugDraw.queue.push(drawFunc);
 }
+debugDraw.queue = [];
 
 function draw(){
 			

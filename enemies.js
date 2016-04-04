@@ -132,4 +132,8 @@ Goomba.prototype.update = function(time) {
 	enemies.simpleUpdate(this, time)
 }
 
+Goomba.prototype.die = function() {
+	this.isDead = true;
+}
+
 Goomba.prototype.draw = enemies.simpleDraw;
