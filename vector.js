@@ -68,6 +68,18 @@ Vector.prototype.addV = function(other){
 	return this;
 }
 
+Vector.prototype.subtract = function(x,y){
+	this.x -= x;
+	this.y -= y;
+	return this;
+}
+
+Vector.prototype.subtractV = function(other){
+	this.x -= other.x;
+	this.y -= other.y;
+	return this;
+}
+
 Vector.prototype.addScaledV = function(scale,other){
 	this.x += other.x * scale;
 	this.y += other.y * scale;
