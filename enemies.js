@@ -14,9 +14,17 @@ Constants.enemies = {
 
 var enemies = new Array();
 
+//Calls callback with (enemies[i], i)
+enemies.forEach = function(callback) {
+	for(var i = 0; i < this.length; i++) {
+		if(this[i] != null){
+			callback(this[i], i);
+		}
+	}
+}
+
 enemies.update = function(time){
-	for(var i = 0; i < this.length; i++)
-	{
+	for(var i = 0; i < this.length; i++) {
 		if(this[i] != null){
 			this[i].update(time);
 			if(this[i].isDead)

@@ -274,9 +274,9 @@ function particleWaterSpray(pos, vel, size, maxSize, drag, col, lifetime){
 				this.vel.multElements(this.bounceY);
 			}
 
-			var enemyHere = enemies.getHere(this.pos)
-			if(enemyHere != null){
-				enemyHere.bounds.vel.addScaledV(this.lifetime / this.maxLife / 10, this.vel );
+			var enemiesHere = enemies.getHere(this.pos)
+			if(enemiesHere.length > 0){
+				enemiesHere[0].bounds.vel.addScaledV(this.lifetime / this.maxLife / 10, this.vel );
 				//enemyHere.isDead = true;
 				this.isDead = true;
 			}
