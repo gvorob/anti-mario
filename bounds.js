@@ -37,6 +37,9 @@ bounds.prototype.setBottom = function(n){this.pos.y = n - this.size.y}
 bounds.prototype.setLeft   = function(n){this.pos.x = n}
 bounds.prototype.setRight  = function(n){this.pos.x = n - this.size.x}
 
+bounds.prototype.draw = function(ctx) {
+	ctx.fillRect(cellSize * this.pos.x, cellSize * this.pos.y, cellSize * this.size.x, cellSize * this.size.y);
+}
 
 bounds.prototype.move = function(time){
 	this.onGround = false;

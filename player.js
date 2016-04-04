@@ -162,7 +162,7 @@ player.prototype.getFacingIndex = function()
 
 player.prototype.draw = function(ctx){
 	ctx.fillStyle="#88F";
-	ctx.fillRect(cellSize * this.bounds.pos.x, cellSize * this.bounds.pos.y, cellSize * this.bounds.size.x, cellSize * this.bounds.size.y);
+	this.bounds.draw(ctx);
 }
 
 }//End player declaration scope

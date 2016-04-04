@@ -26,37 +26,46 @@ enemies.update = function(time){
 }
 
 enemies.draw = function(ctx) {
-	for(var i = 0; i < this.length; i++) {
-		if(this[i] != null)
-			{this[i].draw(ctx);}
-	}
+	this.forEach(function(e) { e.draw(ctx); });
 }
 
 enemies.add = function(part) {
 	var i;
-	for(i = 0; i < this.length && i != -1; i++) {
+	for(i = 0; i < this.length; i++) {
 		if(this[i] == null){
 			this[i] = part;
-			i = -2;
+			break;
 		}
 	}
-	if(i != -1) //was not added (need to grow)
+	if(i == this.length) //was not added (need to grow)
 		{this[this.length] = part;}
 }
 
 //get all enemies intersecting a point
+//returns a list
 enemies.getHere = function(pos){
-	for(var i = 0; i < this.length; i++){
-		if(this[i] != null)
-			if(this[i].bounds.contains(pos))
-				return this[i];
-	}
-	return null;
+	var results = [];
+	this.forEach(function(e) {
+			if(e.bounds.contains(pos))
+				{ results.push(e); }
+		});
+	return results;
+}
+
+//get all enemies who collide with a bounding box
+//returns a list
+enemies.getColliding = function(bounds){
+	var results = [];
+	this.forEach(function(e) {
+			if(e.bounds.collidesWith(bounds))
+				{ results.push(e); }
+		});
+	return results;
 }
 
 enemies.simpleDraw = function(ctx) {
 	ctx.fillStyle = this.col.create();
-	ctx.fillRect(this.bounds.pos.x * cellSize, this.bounds.pos.y * cellSize, this.bounds.size.x * cellSize, this.bounds.size.y * cellSize);
+	this.bounds.draw(ctx)
 }
 
 enemies.simpleUpdate = function(that, time){
