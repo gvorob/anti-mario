@@ -46,6 +46,8 @@ player = function(){
 	this.jumpspeed    = Constants.player.jumpspeed;
 	this.jetpackspeed = Constants.player.jetpackspeed;
 
+	this.jetMode = "physics";
+
 	this.jumpState = s.NOT_PRESSED;
 }
 
@@ -104,15 +106,40 @@ player.prototype.handleJumping = function(jumpKeyState, time) {
 
 		//do jetpack, unless is normal jump and not yet been released
 		else if(jumpKeyState && this.jumpState != s.BUTTON){
-			if(this.jumpState === s.NOT_PRESSED) {//if just started
-				this.pack.burst(Constants.player.jetpackburst); 
-				this.bounds.vel.y = Constants.player.jetpackburstspeed + this.jetpackspeed;
-			}
+			if(this.jumpState === s.NOT_PRESSED) //if just started
+				{ this.jet[this.jetMode].startJet(time, this); }
 			this.jumpState = s.BUTTON_AIR;
-			this.bounds.vel.y = Math.min(this.bounds.vel.y, -1 * this.jetpackspeed);
-			this.pack.update(time);
+			this.jet[this.jetMode].doJet(time, this);
 		}
 	}	
+}
+
+player.prototype.jet = {
+	physics: {},
+	game:    {},
+};
+player.prototype.jet.game.startJet = function(time, that) {
+	that.pack.burst(Constants.player.jetpackburst); 
+	that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
+}
+
+player.prototype.jet.game.doJet = function(time, that) {
+	that.bounds.vel.y = Math.min(that.bounds.vel.y, -1 * that.jetpackspeed);
+	that.pack.update(time);
+}
+
+player.prototype.jet.physics.startJet = function(time, that) {
+	that.pack.burst(Constants.player.jetpackburst); 
+	//that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
+}
+
+player.prototype.jet.physics.doJet = function(time, that) {
+	var TTW = 2;
+	var vMax = -that.jetpackspeed * 1.3;
+	var g = Constants.player.gravity;
+	var accel = ((TTW - 1) * g / vMax) * that.bounds.vel.y - (g * TTW);
+	that.bounds.vel.y += accel * time;
+	that.pack.update(time);
 }
 
 //returns 0 if facing right, 1 otherwise
