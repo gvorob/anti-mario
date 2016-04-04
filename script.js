@@ -47,14 +47,13 @@ function update(){
 	screenOffset.scale(-cellSize);
 	screenOffset.add(250,250);
 
+	//'c'
 	if(keyState[67]){
-		var tempBounds = new bounds(
-			player.bounds.pos.clone(), 
-			Constants.enemies.slimes.size
-		);
-		enemies.add(new Slime(tempBounds));
+		//spawnSlime();
+		spawnGoomba();
 		keyState[67] = false;
 	}
+
 
 	var stepTime = 20/1000;
 	player.update(stepTime);
@@ -78,8 +77,8 @@ function draw(){
 
 	gridDraw(ctx)
 
-	enemies.draw(ctx);
 	particles.draw(ctx);
+	enemies.draw(ctx);
 	player.draw(ctx);
 	ctx.fillStyle="rgb(255,0,0)";
 
@@ -112,3 +111,18 @@ function drawCircle(context, location, radius)
 	context.closePath();
 }
 
+function spawnSlime() {
+		var tempBounds = new bounds(
+			player.bounds.pos.clone(), 
+			Constants.enemies.slime.size
+		);
+		enemies.add(new Slime(tempBounds));
+}
+
+function spawnGoomba() {
+		var tempBounds = new bounds(
+			player.bounds.pos.clone(), 
+			Constants.enemies.goomba.size
+		);
+		enemies.add(new Goomba(tempBounds));
+}

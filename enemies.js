@@ -1,8 +1,15 @@
 var Constants = Constants || {};
 Constants.enemies = {
-	slimes: {
+	slime: {
 		size: new Vector(0.7, 0.7),
 	},
+	goomba: {
+		size: new Vector(0.8,0.7),
+		speed: 5,
+		color: new color(100, 10, 0, 1),
+	},
+	gravity: 15,
+
 };
 
 var enemies = new Array();
@@ -47,23 +54,31 @@ enemies.getHere = function(pos){
 	return null;
 }
 
+enemies.simpleDraw = function(ctx) {
+	ctx.fillStyle = this.col.create();
+	ctx.fillRect(this.bounds.pos.x * cellSize, this.bounds.pos.y * cellSize, this.bounds.size.x * cellSize, this.bounds.size.y * cellSize);
+}
+
+enemies.simpleUpdate = function(that, time){
+	//Gravity
+	that.bounds.vel.add(0, Constants.enemies.gravity * time);		
+	that.bounds.move(time);
+}
+
 function Slime(bounds){
 	this.bounds = bounds;
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed / 2);
 	}
 
-	this.vel = 0;
 	this.jumpDelay = 1;
 	this.col = new color(100,200,50,1);
 	this.isDead = false;
 }
 
+Slime.prototype.draw = enemies.simpleDraw;
 Slime.prototype.update = function(time){
-	//Gravity
-	this.bounds.vel.add(0, 25 * time);		
-
-	this.bounds.move(time);
+	enemies.simpleUpdate(this, time); //handle gravity
 
 	//handle jumping/jumping AI
 	if(!this.bounds.onGround)
@@ -85,8 +100,19 @@ Slime.prototype.jump = function(){
 	this.bounds.vel.x *= Math.random() + 1.5
 }
 
-Slime.prototype.draw = function(ctx){
-	ctx.fillStyle = this.col.create();
-	debug = this.bounds
-	ctx.fillRect(this.bounds.pos.x * cellSize,this.bounds.pos.y * cellSize, this.bounds.size.x * cellSize,this.bounds.size.y * cellSize);
+
+function makeGoomba(pos) {
+	var tempBounds = new bounds(pos.clone(), Constants.enemies.goomba.size.clone());
+	enemies.add(new Goomba(tempBounds));
 }
+function Goomba(bounds) {
+	this.bounds = bounds;
+	this.col = Constants.enemies.goomba.color;
+	this.isDead = false;
+}
+
+Goomba.prototype.update = function(time) {
+	enemies.simpleUpdate(this, time)
+}
+
+Goomba.prototype.draw = enemies.simpleDraw;
