@@ -63,6 +63,11 @@ function update(){
 	draw();
 }
 
+var debugDraw = function(drawFunc) {
+	debugDraw.queue = debugDraw.queue || [];
+	debugDraw.queue.push(drawFunc);
+}
+
 function draw(){
 			
 
@@ -80,17 +85,22 @@ function draw(){
 	particles.draw(ctx);
 	enemies.draw(ctx);
 	player.draw(ctx);
-	ctx.fillStyle="rgb(255,0,0)";
+
+	for(var i = 0; i < debugDraw.queue.length; i++) {
+		debugDraw.queue[i](ctx);
+	}
+	debugDraw.queue = [];
 
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
 
+
+	ctx.fillStyle="rgb(255,0,0)";
 
 	var count = 0
 	for(var i = 0; i < particles.length;i++){if(particles[i]!=null)count++;}
 
 	ctx.fillText("Particles: " + count, 2, 499);
 	ctx.fillText("Vel: x " + player.bounds.vel.x + "; y " + player.bounds.vel.y, 2, 487);
-
 
 }
 

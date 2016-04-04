@@ -71,6 +71,8 @@ player.prototype.update = function(time){
 	//Move by velocity
 	this.bounds.move(time);
 
+	this.handleCollisions(time);
+
 	//Handle Jump input
 	var jumpKeyState = keyState[87] || keyState[38] || keyState[90];
 	this.handleJumping(jumpKeyState, time);
@@ -81,6 +83,21 @@ player.prototype.update = function(time){
 		temp.addV(Constants.player.waterCannonOffset[this.getFacingIndex()]);
 		this.waterCannon.update(time,temp,this.facing);
 	}
+}
+
+player.prototype.handleCollisions = function(time) {
+	var collidedEnemies = enemies.getColliding(this.bounds);
+
+	debugDraw(function(ctx) {
+			ctx.fillStyle="#2B2";
+			for(var i = 0; i < collidedEnemies.length; i++) {
+				collidedEnemies[i].bounds.draw(ctx);
+			}
+		});
+	//check all enemies to see if there is overlap
+	
+	//If there is, check velocity and stuff to see
+	//Whether you hit from the top or sides
 }
 
 player.prototype.handleJumping = function(jumpKeyState, time) {
