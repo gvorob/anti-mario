@@ -180,10 +180,12 @@ function jetpackEmitter(pos, offset){
 	
 	var scale = Constants.particles.scale;
 
-	this.genParams = function(time) {
+	this.genParams = function(vel) {
 		var p = {};
 		p.vel = new Vector(randRange(-0.35, 0.35) , 2.0);
 		p.vel.setLength(randOff(32,0.2) * scale);
+		if(vel && !vel.isNaN())
+			{p.vel.addV(vel); }
 		p.survivalTime = randOff(0.5,0.5);
 		p.size = randOff(6/8,0.5) * scale;
 		p.maxSize = randOff(p.size * 3,0.5) * scale;
@@ -194,7 +196,7 @@ function jetpackEmitter(pos, offset){
 		return p;
 	}
 
-	this.burst = function(x) {
+	this.burst = function(x, vel) {
 		var time = 20/1000;
 		this.numToSpawn += x * this.spawnRate;
 		var startPos = this.pos.clone();
@@ -204,6 +206,8 @@ function jetpackEmitter(pos, offset){
 			var p = this.genParams();
 			p.vel = new Vector(randRange(-0.5, 0.5) , 2.0);
 			p.vel.setLength(randOff(36, 0.4) * scale);
+			if(vel && !vel.isNaN())
+				{p.vel.addV(vel); }
 
 			var pos = startPos.clone();
 			//keep them from stacking up
@@ -212,13 +216,13 @@ function jetpackEmitter(pos, offset){
 		}
 	}
 
-	this.update = function(time){
+	this.update = function(time, vel){
 		this.numToSpawn += time * this.spawnRate;
 		var startPos = this.pos.clone();
 		startPos.addV(this.offset);	
 
 		for(;this.numToSpawn >= 1; this.numToSpawn--){
-			var p = this.genParams();
+			var p = this.genParams(vel);
 
 			var pos = startPos.clone();
 			//keep them from stacking up

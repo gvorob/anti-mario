@@ -118,29 +118,43 @@ player.prototype.jet = {
 	physics: {},
 	game:    {},
 };
-player.prototype.jet.game.startJet = function(time, that) {
-	that.pack.burst(Constants.player.jetpackburst); 
-	that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
-}
 
-player.prototype.jet.game.doJet = function(time, that) {
-	that.bounds.vel.y = Math.min(that.bounds.vel.y, -1 * that.jetpackspeed);
-	that.pack.update(time);
-}
+{ //player.prototype.jet scope
+	var j = player.prototype.jet;
+	
+	j.startGraphics = function(time, that) {
+		that.pack.burst(Constants.player.jetpackburst, that.bounds.vel); 
+	}
 
-player.prototype.jet.physics.startJet = function(time, that) {
-	that.pack.burst(Constants.player.jetpackburst); 
-	//that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
-}
+	j.doGraphics = function(time, that) {
+		that.pack.update(time, that.bounds.vel);
+	}
 
-player.prototype.jet.physics.doJet = function(time, that) {
-	var TTW = 2;
-	var vMax = -that.jetpackspeed * 1.3;
-	var g = Constants.player.gravity;
-	var accel = ((TTW - 1) * g / vMax) * that.bounds.vel.y - (g * TTW);
-	that.bounds.vel.y += accel * time;
-	that.pack.update(time);
-}
+	j.game.startJet = function(time, that) {
+		that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
+		j.startGraphics(time,that);
+	}
+
+	j.game.doJet = function(time, that) {
+		that.bounds.vel.y = Math.min(that.bounds.vel.y, -1 * that.jetpackspeed);
+		j.doGraphics(time, that);
+	}
+
+	j.physics.startJet = function(time, that) {
+		//that.bounds.vel.y = Constants.player.jetpackburstspeed + that.jetpackspeed;
+		j.startGraphics(time,that);
+	}
+
+	j.physics.doJet = function(time, that) {
+		var TTW = 2;
+		var vMax = -that.jetpackspeed * 1.3;
+		var g = Constants.player.gravity;
+		var accel = ((TTW - 1) * g / vMax) * that.bounds.vel.y - (g * TTW);
+		that.bounds.vel.y += accel * time;
+		j.doGraphics(time, that);
+	}
+
+} //end jet scope
 
 //returns 0 if facing right, 1 otherwise
 player.prototype.getFacingIndex = function() 
