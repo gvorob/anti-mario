@@ -6,7 +6,20 @@ function bounds(pos,size){//pos and size are vectors
 }
 
 bounds.prototype.contains = function(pos){
-	return pos.x > this.pos.x && pos.y > this.pos.y && pos.x < this.pos.x + this.size.x && pos.y < this.pos.y + this.size.y;
+	return pos.x > this.pos.x && 
+	       pos.y > this.pos.y && 
+		   pos.x < this.pos.x + this.size.x && 
+		   pos.y < this.pos.y + this.size.y;
+}
+
+bounds.prototype.collidesWith = function(other) {
+	var missedX = this.getRight() < other.getLeft() ||
+	              this.getLeft() > other.getRight();
+
+	var missedY = this.getTop() > other.getBottom() ||
+	              this.getBottom() < other.getTop();
+
+	return !missedX && !missedY;
 }
 
 bounds.prototype.getTop    = function(){return this.pos.y}
