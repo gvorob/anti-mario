@@ -72,6 +72,35 @@ function gridDraw(ctx){
 	//console.timeEnd('before');
 }
 
+function resizeGrid(x, y) {
+	if(!Number.isInteger(x) ||
+	   !Number.isInteger(y)) 
+		{throw "invalid size (" + x + ", " + y + ") in resizeGrid"; }
+
+	gridData.length = x;
+
+	for(var i = 0; i < x; i++){
+		//Expand new Arrays
+		if(i >= gridData.width) {
+			gridData[i] = new Array();
+			tempGrid[i] = new Array();
+		} else {
+			gridData[i].length = y;
+			tempGrid[i].length = y;
+		}
+	}	
+
+	gridData.width = x;
+	gridData.height = y;
+
+	//Set all new tiles
+	forEachIn(function(i, j) { 
+			if(gridData[i][j] == undefined) {
+				gridData[i][j] = 0;
+			}
+		});
+}
+
 function saveGrid(){
 	var result = "";
 	result+= gridData.width + "." + gridData.height + ".";
