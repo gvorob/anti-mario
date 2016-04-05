@@ -49,6 +49,7 @@ Player = function(){
 	this.jetMode = "physics";
 
 	this.jumpState = s.NOT_PRESSED;
+	this.isDead = false;
 }
 
 Player.prototype.update = function(time){
@@ -200,6 +201,10 @@ Player.prototype.getFacingIndex = function()
 Player.prototype.draw = function(ctx){
 	ctx.fillStyle="#88F";
 	this.bounds.draw(ctx);
+}
+
+Player.prototype.die = function(){
+	
 }
 
 }//End player declaration scope
