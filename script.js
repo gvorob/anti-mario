@@ -6,6 +6,8 @@ var cellSize = 32;
 
 var currentLevel = 1;
 
+var currentlyDrawing = -1; //what tile am I drawing with my mouse
+
 $(function() { start();});
 
 function start(){
@@ -17,13 +19,24 @@ function start(){
 	ctx.font = "12px arial";
 	//setupGrid()
 
-	canvas.addEventListener('click', function(event){
+	j_canvas.on('mousedown', function(event){
 		var mClick = getCanvasClick(j_canvas, event)
 		var tile = pixelCoordsToWorldCoords(mClick);
 		var oldTileVal = gridData.fromVec(tile);
-
-		gridData.setFromVec(tile, (!oldTileVal)|0);
+		currentlyDrawing = (!oldTileVal)|0;
+		gridData.setFromVec(tile, currentlyDrawing);
 	});
+	j_canvas.on('mousemove', function(event){
+		if(currentlyDrawing == -1) { return;}
+
+		var mClick = getCanvasClick(j_canvas, event)
+		var tile = pixelCoordsToWorldCoords(mClick);
+		gridData.setFromVec(tile, currentlyDrawing);
+	});
+	$("body").on('mouseup', function(event){
+		currentlyDrawing = -1;
+	});
+
 	player = new player();
 	screenOffset = new Vector(0,0);
 
