@@ -4,6 +4,8 @@ var screenOffset;
 var pause;
 var cellSize = 32;
 
+var currentLevel = 1;
+
 $(function() { start();});
 
 function start(){
@@ -14,7 +16,6 @@ function start(){
 	ctx = canvas.getContext('2d');
 	ctx.font = "12px arial";
 	//setupGrid()
-	load($('#levelData').text());
 
 	canvas.addEventListener('click', function(event){
 		var mClick = getCanvasClick(j_canvas, event)
@@ -27,6 +28,8 @@ function start(){
 	screenOffset = new Vector(0,0);
 
 	pause = setInterval(update,20);
+
+	loadLevelString($('#levelData').text());
 }
 
 //Returns a vector with canvas click coords
@@ -122,18 +125,65 @@ function drawCircle(context, location, radius)
 	context.closePath();
 }
 
-function spawnSlime() {
-		var tempBounds = new bounds(
-			player.bounds.pos.clone(), 
-			Constants.enemies.slime.size
-		);
-		enemies.add(new Slime(tempBounds));
+function spawnSlime() 
+	{ spawnEnemyOfType("slime", player.bounds.pos.clone()); }
+
+function spawnGoomba() 
+	{ spawnEnemyOfType("goomba", player.bounds.pos.clone()); }
+
+//returns the string
+function saveLevelString() {
+	return JSON.stringify(saveLevel());
 }
 
-function spawnGoomba() {
-		var tempBounds = new bounds(
-			player.bounds.pos.clone(), 
-			Constants.enemies.goomba.size
+function loadLevelString(levelString) {
+	var levelObj = JSON.parse(levelString);
+	if(typeof(levelObj) != "object") 
+		throw "invalid level string in loadLevelString";
+	loadLevel(levelObj);
+}
+
+//returns a level object
+function saveLevel() {
+	var saveObj = {};
+	saveObj.gridString = saveGrid();
+	saveObj.playerStart = player.bounds.pos.clone();
+	saveObj.enemies = {};
+	enemies.forEach(function(e) {
+			saveObj.enemies[e.type] = saveObj.enemies[e.type] || [];
+			saveObj.enemies[e.type].push(e.bounds.pos.clone());
+	});
+	return saveObj;
+}
+
+function loadLevel(levelObj) {
+	//Level obj should have:
+	//gridString
+	//playerStart (Vector pos)
+	//enemies: {
+	//            goomba:[ pos, pos, ... ],
+	//            ...
+	//         }
+	
+	if(typeof(levelObj.gridString) != "string")
+		throw "gridString missing in loadLevel";
+	if(typeof(levelObj.playerStart) != "object")
+		throw "playerStart missing in loadLevel";
+
+	loadGrid(levelObj.gridString);
+	player.bounds.pos.setV(levelObj.playerStart);
+
+
+	//clear old enemies
+	enemies.clearAll();
+
+	//load new enemies
+	for(enemyType in levelObj.enemies) {
+		var e_positionList = levelObj.enemies[enemyType];
+		if(!Array.isArray(e_positionList))
+			throw "enemies[" + enemyType + "] is not array";
+		e_positionList.forEach(function(e_pos) 
+				{ spawnEnemyOfType(enemyType, Vector.fromObj(e_pos)); }
 		);
-		enemies.add(new Goomba(tempBounds));
+	}
 }

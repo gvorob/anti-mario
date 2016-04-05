@@ -14,6 +14,11 @@ function Vector(x,y){
 	this.y = y;
 }
 
+//creates from any obj with an x and y
+Vector.fromObj = function(o) {
+	return new Vector(o.x, o.y);
+}
+
 Vector.floor = function(v){
 	return new Vector(Math.floor(v.x), Math.floor(v.y));
 }

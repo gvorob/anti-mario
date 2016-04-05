@@ -72,7 +72,7 @@ function gridDraw(ctx){
 	//console.timeEnd('before');
 }
 
-function save(){
+function saveGrid(){
 	var result = "";
 	result+= gridData.width + "." + gridData.height + ".";
 	for(var i = 0; i < gridData.width; i++){
@@ -83,7 +83,7 @@ function save(){
 	return result;
 }
 		
-function load(inString){
+function loadGrid(inString){
 	var result = inString.split(".");
 	gridData.width = parseInt(result[0]);
 	gridData.height = parseInt(result[1]);

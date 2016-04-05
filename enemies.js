@@ -2,11 +2,13 @@ var Constants = Constants || {};
 Constants.enemies = {
 	slime: {
 		size: new Vector(0.7, 0.7),
+		constructor: Slime,
 	},
 	goomba: {
 		size: new Vector(0.8,0.7),
 		speed: 5,
 		color: new color(100, 10, 0, 1),
+		constructor: Goomba,
 	},
 	gravity: 15,
 
@@ -49,6 +51,10 @@ enemies.add = function(part) {
 		{this[this.length] = part;}
 }
 
+enemies.clearAll = function() {
+	enemies.length = 0;
+}
+
 //get all enemies intersecting a point
 //returns a list
 enemies.getHere = function(pos){
@@ -82,8 +88,10 @@ enemies.simpleUpdate = function(that, time){
 	that.bounds.move(time);
 }
 
+
 function Slime(bounds){
 	this.bounds = bounds;
+	this.type = "slime";
 	this.bounds.onCollide = function(speed){
 		particles.doStomp(new Vector(this.pos.x + this.size.x / 2, this.getBottom() - 0.1), speed / 2);
 	}
@@ -117,13 +125,23 @@ Slime.prototype.jump = function(){
 	this.bounds.vel.x *= Math.random() + 1.5
 }
 
+//returns it
+function makeEnemyOfType(e_type, pos) {
+	var e_constants = Constants.enemies[e_type];
+	if(e_constants == null)
+		throw "no such enemy '" + e_type + "'";
 
-function makeGoomba(pos) {
-	var tempBounds = new bounds(pos.clone(), Constants.enemies.goomba.size.clone());
-	enemies.add(new Goomba(tempBounds));
+	var tempBounds = new bounds(pos.clone(), e_constants.size.clone());
+	return new e_constants.constructor(tempBounds);
 }
+
+//adds it
+function spawnEnemyOfType(e_type, pos)
+	{ enemies.add(makeEnemyOfType(e_type, pos)); }
+
 function Goomba(bounds) {
 	this.bounds = bounds;
+	this.type = "goomba"
 	this.col = Constants.enemies.goomba.color;
 	this.isDead = false;
 }
