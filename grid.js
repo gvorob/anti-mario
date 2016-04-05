@@ -47,7 +47,6 @@ function createGrid(x,y){
 }
 
 function gridDraw(ctx){
-	//console.time('before');
 	ctx.fillStyle="#558";
 	ctx.fillRect(0, 0, gridData.width * cellSize, gridData.height * cellSize);
 
@@ -56,20 +55,8 @@ function gridDraw(ctx){
 		for(var j = 0; j < gridData.height; j++){
 			if(gridData[i][j] == 0)
 				ctx.fillRect(i * cellSize, j * cellSize, cellSize + 1, cellSize + 1);
-			//ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
-
-			/*
-			if(tempGrid[i][j] != 0) {
-				ctx.fillStyle="#D3D"
-				ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
-				ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
-			}
-			tempGrid[i][j] = 0;
-			*/
 		}
 	}
-
-	//console.timeEnd('before');
 }
 
 function resizeGrid(x, y) {

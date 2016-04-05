@@ -4,7 +4,7 @@ var screenOffset;
 var pause;
 var cellSize = 32;
 
-var currentLevel = 1;
+var currentLevel;
 
 var currentlyDrawing = -1; //what tile am I drawing with my mouse
 
@@ -42,7 +42,7 @@ function start(){
 
 	pause = setInterval(update,20);
 
-	loadLevelString($('#levelData').text());
+	loadLevelByNumber(0);
 }
 
 //Returns a vector with canvas click coords
@@ -199,4 +199,27 @@ function loadLevel(levelObj) {
 				{ spawnEnemyOfType(enemyType, Vector.fromObj(e_pos)); }
 		);
 	}
+}
+
+function loadLevelByNumber(n) {
+	if(
+		!Number.isInteger(n) ||
+		n < 0 ||
+		n >= levelData.length
+	) { throw "No such level: " + n; }
+		
+	loadLevel(levelData[n]);   
+	currentLevel = n;
+}
+
+//goes to currentLevel + delta
+function changeLevelDelta(delta) {
+	var newLevel = currentLevel + delta;
+	if(!Number.isInteger(newLevel)) 
+		{ throw "invalid delta in changeLevelDelta"; }
+	
+	if(newLevel < 0 || newLevel >= levelData.length)
+		{ console.log("no more levels"); return; }
+
+	loadLevelByNumber(newLevel);
 }
