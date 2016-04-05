@@ -37,7 +37,6 @@ function start(){
 		currentlyDrawing = -1;
 	});
 
-	player = new player();
 	screenOffset = new Vector(0,0);
 
 	pause = setInterval(update,20);
@@ -184,6 +183,7 @@ function loadLevel(levelObj) {
 		throw "playerStart missing in loadLevel";
 
 	loadGrid(levelObj.gridString);
+	player = new Player();
 	player.bounds.pos.setV(levelObj.playerStart);
 
 
@@ -201,6 +201,7 @@ function loadLevel(levelObj) {
 	}
 }
 
+//loads levelData[n], sets currentLevel
 function loadLevelByNumber(n) {
 	if(
 		!Number.isInteger(n) ||

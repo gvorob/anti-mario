@@ -25,11 +25,11 @@ var Constants = Constants || {};
 	};
 }
 
-var player;
+var Player;
 { //Player declaration scope
 var s = Constants.player.jumpstates;
 
-player = function(){
+Player = function(){
 	this.bounds = new bounds(new Vector(2,1), Constants.player.size.clone());
 
 	this.bounds.onCollide = function(speed){
@@ -51,7 +51,7 @@ player = function(){
 	this.jumpState = s.NOT_PRESSED;
 }
 
-player.prototype.update = function(time){
+Player.prototype.update = function(time){
 	//Get gravitied
 	this.bounds.vel.add(0, this.gravity * time);
 	this.bounds.vel.x = 0;	
@@ -85,7 +85,7 @@ player.prototype.update = function(time){
 	}
 }
 
-player.prototype.handleCollisions = function(time) {
+Player.prototype.handleCollisions = function(time) {
 	var that = this;
 	var collidedEnemies = enemies.getColliding(this.bounds);
 
@@ -120,7 +120,7 @@ player.prototype.handleCollisions = function(time) {
 	}
 }
 
-player.prototype.handleJumping = function(jumpKeyState, time) {
+Player.prototype.handleJumping = function(jumpKeyState, time) {
 	//Handle jump (On ground)
 	if(this.bounds.onGround){
 		//reset keys
@@ -151,13 +151,13 @@ player.prototype.handleJumping = function(jumpKeyState, time) {
 	}	
 }
 
-player.prototype.jet = {
+Player.prototype.jet = {
 	physics: {},
 	game:    {},
 };
 
-{ //player.prototype.jet scope
-	var j = player.prototype.jet;
+{ //Player.prototype.jet scope
+	var j = Player.prototype.jet;
 	
 	j.startGraphics = function(time, that) {
 		that.pack.burst(Constants.player.jetpackburst, that.bounds.vel); 
@@ -194,10 +194,10 @@ player.prototype.jet = {
 } //end jet scope
 
 //returns 0 if facing right, 1 otherwise
-player.prototype.getFacingIndex = function() 
+Player.prototype.getFacingIndex = function() 
 	{return this.facing>0?0:1;}
 
-player.prototype.draw = function(ctx){
+Player.prototype.draw = function(ctx){
 	ctx.fillStyle="#88F";
 	this.bounds.draw(ctx);
 }
