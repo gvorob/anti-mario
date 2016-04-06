@@ -5,7 +5,7 @@ var Constants = Constants || {};
 		size                : tempSize,
 		movespeed           : 5,
 		gravity             : 30,
-		jumpspeed           : 12,
+		jumpspeed           : 15,
 		jumpstates          : {
 			NOT_PRESSED: 0,
 			BUTTON:  1,
@@ -74,7 +74,9 @@ Player.prototype.update = function(time){
 	//Move by velocity
 	this.bounds.moveSimple(time);
 
-	this.handleCollisions(time);
+	//handle enemy collisions
+	if(!editMode)
+		{ this.handleCollisions(time); }
 
 	//Handle Jump input
 	var jumpKeyState = keyState[87] || keyState[38] || keyState[90];

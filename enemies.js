@@ -5,7 +5,7 @@ Constants.enemies = {
 		constructor: Slime,
 	},
 	goomba: {
-		size: new Vector(0.8,0.7),
+		size: new Vector(0.95,0.9),
 		speed: 2,
 		maxAccel: 3,
 		jumpSpeed: 10,

@@ -2,7 +2,10 @@ var canvas, ctx;
 var player;
 var screenOffset;
 var pause;
-var cellSize = 32;
+var cellSize = 64;
+
+var editMode = false;
+var cripplePlayer = false;
 
 var currentLevel;
 
@@ -40,13 +43,15 @@ function update(){
 
 	screenOffset.setV(player.bounds.pos);
 	screenOffset.scale(-cellSize);
-	screenOffset.add(250,250);
+	screenOffset.add(600,400);
 
 
 	var stepTime = 20/1000;
 	player.update(stepTime);
 	particles.update(stepTime);
-	enemies.update(stepTime);
+	
+	if(!editMode)
+		{ enemies.update(stepTime); }
 
 	draw();
 }
@@ -97,6 +102,15 @@ function draw(){
 	ctx.fillText("Particles: " + count, 2, 499);
 	ctx.fillText("Vel: x " + player.bounds.vel.x + "; y " + player.bounds.vel.y, 2, 487);
 
+}
+
+function setEditMode(val) {
+	if(val) {
+		UI.mode = "EDIT";
+	} else {
+		UI.mode = "CLICK_JUMP";
+	}
+	editMode = val;
 }
 
 function drawLine(context, startVector, changeVector){
@@ -216,3 +230,5 @@ function changeLevelDelta(delta) {
 
 function reloadLevel() 
 	{ loadLevelByNumber(currentLevel); }
+
+
