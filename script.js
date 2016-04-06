@@ -93,9 +93,9 @@ function draw(){
 
 	gridDraw(ctx)
 
-	particles.draw(ctx);
 	enemies.draw(ctx);
 	player.draw(ctx);
+	particles.draw(ctx);
 
 	for(var i = 0; i < debugDraw.queue.length; i++) {
 		debugDraw.queue[i](ctx);

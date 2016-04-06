@@ -8,6 +8,7 @@ Constants.enemies = {
 		size: new Vector(0.8,0.7),
 		speed: 5,
 		color: new color(100, 10, 0, 1),
+		deathAnimTime: 1,
 		constructor: Goomba,
 	},
 	gravity: 15,
@@ -143,15 +144,35 @@ function Goomba(bounds) {
 	this.bounds = bounds;
 	this.type = "goomba"
 	this.col = Constants.enemies.goomba.color;
+	this.dying = -1; //if >0, is in dying animation
 	this.isDead = false;
 }
 
 Goomba.prototype.update = function(time) {
-	enemies.simpleUpdate(this, time)
+	if(this.dying == -1) { //is alive
+		enemies.simpleUpdate(this, time)
+	} else {  //is dying
+		this.dying -= time;
+		if(this.dying < 0)
+			{ this.isDead = true; }
+	}
 }
 
 Goomba.prototype.die = function() {
-	this.isDead = true;
+	//particles.doBloodExplosion(this.bounds.pos.clone(), 1);
+	this.dying = Constants.enemies.goomba.deathAnimTime;
+	
+	//flatten downwards
+	var oldBottom = this.bounds.getBottom();
+	this.bounds.size.y *= 0.2;
+	this.bounds.setBottom(oldBottom);
+
+	//widen outwards
+	var widenedBy = this.bounds.size.x * 0.5
+	this.bounds.size.x += widenedBy;
+	this.bounds.pos.x -= widenedBy / 2;
+
+	this.bounds.colliding = false;
 }
 
 Goomba.prototype.draw = enemies.simpleDraw;

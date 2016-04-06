@@ -38,7 +38,7 @@ particles.add = function(part){
 }
 	
 
-function particleRock(pos, vel, size, lifetime){
+function particleBlood(pos, vel, size, lifetime){
 	this.pos = pos;
 	this.vel = vel;
 	this.lifetime = lifetime;
@@ -66,17 +66,17 @@ function particleRock(pos, vel, size, lifetime){
 	}
 }
 
-particles.doRocks = function(pos, speed){
+particles.doBloodExplosion = function(pos, amount){
 	var scale = Constants.particles.scale;
 
-	var numParts = 100//(2 + Math.floor(speed / 4)) * (1 + 0.3 * Math.random());
+	var numParts = 50 * amount;
 	for(var i = 0; i < numParts; i++){
 		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.7);
-		vel.setLength(randRange(0,20) * scale);
+		vel.setLength(randRange(0,Math.sqrt(amount) * 10) * scale);
 
-		var size = randOff(3, 0.2) * scale;
+		var size = randOff(Math.sqrt(amount + 1), 0.2) * scale;
 		var time = 5 * (1 + 0.5 * (Math.random() - 0.5));
-		particles.add(new particleRock(pos.clone(), vel, size, time));
+		particles.add(new particleBlood(pos.clone(), vel, size, time));
 	}
 }
 

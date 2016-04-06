@@ -1,6 +1,7 @@
 function bounds(pos,size){//pos and size are vectors
 	this.pos = pos;
 	this.size = size;
+	this.colliding = true;
 	this.vel = new Vector(0,0);
 	this.onGround = false;
 }
@@ -14,6 +15,8 @@ bounds.prototype.contains = function(pos){
 
 //check if collides with other bounding box
 bounds.prototype.collidesWith = function(other) {
+	if(!this.colliding || !other.colliding) { return; }
+
 	var missedX = this.getRight() < other.getLeft() ||
 	              this.getLeft() > other.getRight();
 

@@ -208,7 +208,7 @@ Player.prototype.draw = function(ctx){
 }
 
 Player.prototype.die = function(){
-	particles.doRocks(this.bounds.pos.clone(), 10);
+	particles.doBloodExplosion(this.bounds.pos.clone(), 3);
 	this.isDead = true;
 }
 
