@@ -72,7 +72,7 @@ Player.prototype.update = function(time){
 	}
 
 	//Move by velocity
-	this.bounds.move(time);
+	this.bounds.moveSimple(time);
 
 	this.handleCollisions(time);
 

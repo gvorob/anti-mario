@@ -6,7 +6,8 @@ Constants.enemies = {
 	},
 	goomba: {
 		size: new Vector(0.8,0.7),
-		speed: 5,
+		speed: 2,
+		maxAccel: 3,
 		color: new color(100, 10, 0, 1),
 		deathAnimTime: 1,
 		constructor: Goomba,
@@ -86,7 +87,7 @@ enemies.simpleDraw = function(ctx) {
 enemies.simpleUpdate = function(that, time){
 	//Gravity
 	that.bounds.vel.add(0, Constants.enemies.gravity * time);		
-	that.bounds.move(time);
+	that.bounds.moveSimple(time);
 }
 
 
@@ -146,11 +147,27 @@ function Goomba(bounds) {
 	this.col = Constants.enemies.goomba.color;
 	this.dying = -1; //if >0, is in dying animation
 	this.isDead = false;
+	this.heading = 1;
+	this.speed = Constants.enemies.goomba.speed;
+	this.bounds.vel.x = this.heading * this.speed;
 }
 
 Goomba.prototype.update = function(time) {
 	if(this.dying == -1) { //is alive
-		enemies.simpleUpdate(this, time)
+		this.bounds.vel.add(0, Constants.enemies.gravity * time);		
+		this.bounds.moveVertical(time);
+
+		//walk/bounce
+		var collidedX = this.bounds.moveHorizontal(time);
+		if(collidedX) {
+			this.heading *= -1;
+			this.bounds.vel.x *= -1;
+		}
+
+		var targetVelX = this.speed * this.heading;
+		var accel = Constants.enemies.goomba.maxAccel * time;
+		console.log(accel);
+		this.bounds.vel.x = u.approach(targetVelX, this.bounds.vel.x, accel);
 	} else {  //is dying
 		this.dying -= time;
 		if(this.dying < 0)

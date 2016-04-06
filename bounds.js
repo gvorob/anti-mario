@@ -91,26 +91,22 @@ bounds.prototype.draw = function(ctx) {
 	ctx.fillRect(cellSize * this.pos.x, cellSize * this.pos.y, cellSize * this.size.x, cellSize * this.size.y);
 }
 
-bounds.prototype.move = function(time){
-	this.onGround = false;
+//moves along x axis, truncates movement and returns true if collides
+bounds.prototype.moveHorizontal = function(time) {
 	var tempv = this.vel.clone();
 	tempv.scale(time);
 	this.pos.x += tempv.x
 
-	var collideSpeed = 0;
-
-	//check left, check right, check top, check bottom
-	
+	var didCollide = false;
 	var tempx;
 	var tempy;
-
 	
 	if(this.vel.x < 0) {
 		tempx = Math.floor(this.getLeft());		
 		for(tempy = Math.floor(this.getTop()); tempy <= Math.floor(this.getBottom()); tempy++) {
 			if(gridData[tempx][tempy] == 0) {
 				this.setLeft(Math.ceil(this.getLeft()) + 0.001);
-				this.vel.x = 0;
+				didCollide = true;
 				break;
 			}
 		}
@@ -119,13 +115,25 @@ bounds.prototype.move = function(time){
 		for(tempy = Math.floor(this.getTop()); tempy <= Math.floor(this.getBottom()); tempy++) {
 			if(gridData[tempx][tempy] == 0) {
 				this.setRight(Math.floor(this.getRight()) - 0.001);
-				this.vel.x = 0;
+				didCollide = true;
 				break;
 			}
 		}
 	}
 
-		
+	return didCollide;
+}
+
+//returns speed at which we hit the ground or -1;
+bounds.prototype.moveVertical = function(time) {
+	this.onGround = false;
+	var tempv = this.vel.clone();
+	tempv.scale(time);
+	var tempx;
+	var tempy;
+
+	var collideSpeed = -1;
+
 	if(this.vel.y < 0) {
 		this.pos.y += tempv.y;
 		tempy = Math.floor(this.getTop());		
@@ -137,6 +145,7 @@ bounds.prototype.move = function(time){
 			}
 		}
 	} else {
+		//if falling too fast, avoid clipping through ground
 		this.pos.y += tempv.y - Math.floor(tempv.y);
 		tempv.y = Math.floor(tempv.y);
 		do {
@@ -159,11 +168,16 @@ bounds.prototype.move = function(time){
 		this.pos.y--;
 	}
 
-	if(this.onCollide != null && collideSpeed > 10){
-		this.onCollide(collideSpeed);
-	}
-		
-	//add collision code later
-	//
-	//
+	return collideSpeed;
+}
+
+bounds.prototype.moveSimple = function(time){
+	var collidedHorizontal = this.moveHorizontal(time);
+	if(collidedHorizontal)
+		{ this.vel.x = 0; }
+	
+	var collideSpeedY = this.moveVertical(time);
+
+	if(this.onCollide != null && collideSpeedY > 10)
+		{ this.onCollide(collideSpeedY); }
 }
