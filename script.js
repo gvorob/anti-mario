@@ -6,7 +6,6 @@ var cellSize = 32;
 
 var currentLevel;
 
-var currentlyDrawing = -1; //what tile am I drawing with my mouse
 
 $(function() { start();});
 
@@ -19,23 +18,7 @@ function start(){
 	ctx.font = "12px arial";
 	//setupGrid()
 
-	j_canvas.on('mousedown', function(event){
-		var mClick = getCanvasClick(j_canvas, event)
-		var tile = pixelCoordsToWorldCoords(mClick);
-		var oldTileVal = gridData.fromVec(tile);
-		currentlyDrawing = (!oldTileVal)|0;
-		gridData.setFromVec(tile, currentlyDrawing);
-	});
-	j_canvas.on('mousemove', function(event){
-		if(currentlyDrawing == -1) { return;}
-
-		var mClick = getCanvasClick(j_canvas, event)
-		var tile = pixelCoordsToWorldCoords(mClick);
-		gridData.setFromVec(tile, currentlyDrawing);
-	});
-	$("body").on('mouseup', function(event){
-		currentlyDrawing = -1;
-	});
+	UI.init();
 
 	screenOffset = new Vector(0,0);
 
@@ -44,18 +27,6 @@ function start(){
 	loadLevelByNumber(0);
 }
 
-//Returns a vector with canvas click coords
-function getCanvasClick(j_canvas, event) {
-	var rect = j_canvas.get(0).getBoundingClientRect();
-	var x = event.clientX - rect.left;
-	var y = event.clientY - rect.top;
-	return new Vector(x, y);
-}
-
-//Uses screenOffset and cellSize to convert
-function pixelCoordsToWorldCoords(p_vec) {
-	return new Vector((p_vec.x - screenOffset.x) / cellSize, (p_vec.y - screenOffset.y) / cellSize);	
-}
 
 function update(){
 	checkKeyHandlers();
@@ -137,6 +108,10 @@ function spawnSlime()
 
 function spawnGoomba() 
 	{ spawnEnemyOfType("goomba", player.bounds.pos.clone()); }
+
+function doClickJump(loc) {
+	console.log ("click jumping at ", loc);
+}
 
 //returns the string
 function saveLevelString() {
