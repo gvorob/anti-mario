@@ -72,15 +72,19 @@ bounds.prototype.checkCollidedTop = function(other) {
 	return cornerDisplacement.getSlope() < relVel.getSlope();
 }
 
-bounds.prototype.getTop    = function(){return this.pos.y}
-bounds.prototype.getBottom = function(){return this.pos.y + this.size.y}
-bounds.prototype.getLeft   = function(){return this.pos.x}
-bounds.prototype.getRight  = function(){return this.pos.x + this.size.x}
+bounds.prototype.getLeft    = function(){return this.pos.x}
+bounds.prototype.getRight   = function(){return this.pos.x + this.size.x}
+bounds.prototype.getCenterX = function(){return this.pos.x + this.size.x / 2}
+bounds.prototype.getTop     = function(){return this.pos.y}
+bounds.prototype.getBottom  = function(){return this.pos.y + this.size.y}
+bounds.prototype.getCenterY = function(){return this.pos.y + this.size.y / 2}
 
 bounds.prototype.getTopRight    = function(){return new Vector(this.getRight(), this.getTop()   ); }
 bounds.prototype.getBottomRight = function(){return new Vector(this.getRight(), this.getBottom()); }
 bounds.prototype.getTopLeft     = function(){return new Vector(this.getLeft() , this.getTop()   ); }
 bounds.prototype.getBottomLeft  = function(){return new Vector(this.getLeft() , this.getBottom()); }
+
+bounds.prototype.getCenter      = function(){return new Vector(this.getCenterX(), this.getCenterY()); }
 
 bounds.prototype.setTop    = function(n){this.pos.y = n}
 bounds.prototype.setBottom = function(n){this.pos.y = n - this.size.y}

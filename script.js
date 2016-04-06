@@ -6,6 +6,12 @@ var cellSize = 32;
 
 var currentLevel;
 
+var Constants = Constants || {};
+{
+	Constants.misc = {
+		clickJumpRange: 1,
+	};
+}
 
 $(function() { start();});
 
@@ -51,36 +57,43 @@ var debugDraw = function(drawFunc) {
 debugDraw.queue = [];
 
 function draw(){
-			
-
-	ctx.clearRect(0,0,canvas.width,canvas.width);
-	ctx.strokeStyle="rgb(0,0,255)";
-	ctx.strokeRect(0,0,500,500);
-	ctx.strokeStyle="rgb(0,0,0)";
+	//clear screen		
+	ctx.clearRect(0, 0, canvas.width, canvas.width);
+	ctx.strokeStyle = "rgb(0,0,0)";
 	
 	ctx.translate(screenOffset.x, screenOffset.y);
 
-
-
+	//Draw game
 	gridDraw(ctx)
-
 	enemies.draw(ctx);
 	player.draw(ctx);
 	particles.draw(ctx);
 
+	//Draw debug things
 	for(var i = 0; i < debugDraw.queue.length; i++) {
 		debugDraw.queue[i](ctx);
 	}
 	debugDraw.queue = [];
 
+	if(UI.mode == "CLICK_JUMP") {
+		console.log("woo")
+		ctx.fillStyle = "rgba(100,20,0,0.2)";
+		drawCircle(ctx, UI.lastWorldMousePos.clone().scale(cellSize), Constants.misc.clickJumpRange);
+	}
+
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
 
 
+	//==============
+	//Debugging
 	ctx.fillStyle="rgb(255,0,0)";
-
 	var count = 0
-	for(var i = 0; i < particles.length;i++){if(particles[i]!=null)count++;}
+	
+	//count particles
+	for(var i = 0; i < particles.length;i++)
+		{if(particles[i]!=null)count++;}
 
+	//Write debug text
 	ctx.fillText("Particles: " + count, 2, 499);
 	ctx.fillText("Vel: x " + player.bounds.vel.x + "; y " + player.bounds.vel.y, 2, 487);
 

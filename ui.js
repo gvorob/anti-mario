@@ -1,12 +1,15 @@
 var UI = function() {
 	var currentlyDrawing = -1; //what tile am I drawing with my mouse
 	var j_canvas;
+	var lastMousePos;
 	var modes;
 	var mode; //key into modes
 
 	init = function() {
 		j_canvas = $("#canvas");
 		var bod = $("body");
+
+		j_canvas.on("mousemove", cacheMousePos);
 
 		var editHandlers = [
 			{ 
@@ -67,6 +70,7 @@ var UI = function() {
 			{ throw "Modes must be strings (in setMode)"; }
 		if(!(newMode in modes))
 			{ throw "No such UI mode: " + newMode; }
+
 		//remove all old handlers
 		if(mode in modes) {
 			modes[mode].handlers.forEach(function(e) {
@@ -95,12 +99,20 @@ var UI = function() {
 		return new Vector((p_vec.x - screenOffset.x) / cellSize, (p_vec.y - screenOffset.y) / cellSize);	
 	}
 	
+	cacheMousePos = function(event) {
+		var mClick = getCanvasClick(j_canvas, event)
+		lastMousePos = mClick;
+	}
+
+	lastWorldMousePos = function() {
+		return pixelCoordsToWorldCoords(lastMousePos);
+	}
 
 	//===================
 	//Publicizing members
 
 	var returnObj =  {
-		init: init,
+		init             : init,
 	}
 	Object.defineProperty(returnObj, "mode", 
 		{ 
@@ -112,6 +124,11 @@ var UI = function() {
 		{ 
 			enumerable: true,
 			get: function() {return modes;},
+		});
+	Object.defineProperty(returnObj, "lastWorldMousePos", 
+		{ 
+			enumerable: true,
+			get: lastWorldMousePos,
 		});
 
 	return returnObj;

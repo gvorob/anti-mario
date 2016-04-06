@@ -69,6 +69,18 @@ enemies.getHere = function(pos){
 	return results;
 }
 
+//get all enemies whose centers are within a certain distance
+//returns a list
+enemies.getHere = function(pos, range){
+	var results = [];
+	this.forEach(function(e) {
+			var displacement = e.bounds.getCenter().subtractV(pos);
+			if(displacement.getLength() <= range)
+				{ results.push(e); }
+		});
+	return results;
+}
+
 //get all enemies who collide with a bounding box
 //returns a list
 enemies.getColliding = function(bounds){
