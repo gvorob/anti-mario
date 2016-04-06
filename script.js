@@ -25,6 +25,7 @@ function start(){
 	//setupGrid()
 
 	UI.init();
+	UI.mode = "CLICK_JUMP";
 
 	screenOffset = new Vector(0,0);
 
@@ -76,7 +77,6 @@ function draw(){
 	debugDraw.queue = [];
 
 	if(UI.mode == "CLICK_JUMP") {
-		console.log("woo")
 		ctx.fillStyle = "rgba(100,20,0,0.2)";
 		drawCircle(ctx, UI.lastWorldMousePos.clone().scale(cellSize), Constants.misc.clickJumpRange);
 	}
@@ -123,7 +123,13 @@ function spawnGoomba()
 	{ spawnEnemyOfType("goomba", player.bounds.pos.clone()); }
 
 function doClickJump(loc) {
-	console.log ("click jumping at ", loc);
+	var e = enemies.getWithinDistance(
+			UI.lastWorldMousePos, 
+			Constants.misc.clickJumpRange);
+	e.forEach(function(e) {
+		if("jump" in e) 
+			{ e.jump(); }
+		});
 }
 
 //returns the string

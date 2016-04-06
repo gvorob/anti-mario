@@ -71,7 +71,7 @@ enemies.getHere = function(pos){
 
 //get all enemies whose centers are within a certain distance
 //returns a list
-enemies.getHere = function(pos, range){
+enemies.getWithinDistance = function(pos, range){
 	var results = [];
 	this.forEach(function(e) {
 			var displacement = e.bounds.getCenter().subtractV(pos);

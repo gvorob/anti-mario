@@ -61,8 +61,6 @@ var UI = function() {
 			CLICK_JUMP: {handlers: clickJumpHandlers},
 		};
 
-
-		setMode("EDIT");
 	}
 
 	setMode = function(newMode) {
@@ -105,7 +103,11 @@ var UI = function() {
 	}
 
 	lastWorldMousePos = function() {
-		return pixelCoordsToWorldCoords(lastMousePos);
+		if(lastMousePos) {
+			return pixelCoordsToWorldCoords(lastMousePos);
+		} else {
+			return new Vector(0,0);
+		}
 	}
 
 	//===================
