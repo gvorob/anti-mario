@@ -38,11 +38,12 @@ particles.add = function(part){
 }
 	
 
-function particleRock(pos, vel, lifetime){
+function particleRock(pos, vel, size, lifetime){
 	this.pos = pos;
 	this.vel = vel;
 	this.lifetime = lifetime;
 	this.isDead = false;
+	this.size = size;
 
 	this.update = function(time){
 		this.lifetime -= time;
@@ -57,10 +58,25 @@ function particleRock(pos, vel, lifetime){
 	}
 	
 	this.draw = function(ctx){
-		ctx.fillStyle="#505020";
+		var scale = Constants.particles.scale;
+		ctx.fillStyle="rgba(255,20,32,0.3)";
 		var temp = pos.clone();
 		temp.scale(cellSize);
-		drawCircle(ctx,temp,3);
+		drawCircle(ctx, temp, size * scale);
+	}
+}
+
+particles.doRocks = function(pos, speed){
+	var scale = Constants.particles.scale;
+
+	var numParts = 100//(2 + Math.floor(speed / 4)) * (1 + 0.3 * Math.random());
+	for(var i = 0; i < numParts; i++){
+		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.7);
+		vel.setLength(randRange(0,20) * scale);
+
+		var size = randOff(3, 0.2) * scale;
+		var time = 5 * (1 + 0.5 * (Math.random() - 0.5));
+		particles.add(new particleRock(pos.clone(), vel, size, time));
 	}
 }
 
@@ -117,15 +133,6 @@ particles.doStomp = function(pos, speed){
 	}
 }
 
-particles.doRocks = function(pos, speed){
-	var numParts = (2 + Math.floor(speed / 4)) * (1 + 0.3 * Math.random());
-	for(var i = 0; i < numParts; i++){
-		var vel = new Vector(Math.random() * 2 - 1, Math.random() * -0.7);
-		vel.setLength((1/3 * Math.abs(speed) + 2) * (1 + 0.5 * (Math.random() - 0.5)));
-		var time = 5 * (1 + 0.5 * (Math.random() - 0.5));
-		particles.add(new particleRock(pos.clone(),vel,time));
-	}
-}
 
 function particleExhaust(pos, vel, size, maxSize, drag, col, lifetime){
 	this.pos = pos;

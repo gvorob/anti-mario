@@ -53,6 +53,8 @@ Player = function(){
 }
 
 Player.prototype.update = function(time){
+	if(this.isDead) { return true; }
+
 	//Get gravitied
 	this.bounds.vel.add(0, this.gravity * time);
 	this.bounds.vel.x = 0;	
@@ -117,7 +119,8 @@ Player.prototype.handleCollisions = function(time) {
 		//bounce
 		this.bounds.vel.y = -10;
 
-		console.log(amDead);
+		if(amDead)
+			{ this.die(); }
 	}
 }
 
@@ -199,12 +202,14 @@ Player.prototype.getFacingIndex = function()
 	{return this.facing>0?0:1;}
 
 Player.prototype.draw = function(ctx){
+	if(this.isDead) { return true; }
 	ctx.fillStyle="#88F";
 	this.bounds.draw(ctx);
 }
 
 Player.prototype.die = function(){
-	
+	particles.doRocks(this.bounds.pos.clone(), 10);
+	this.isDead = true;
 }
 
 }//End player declaration scope

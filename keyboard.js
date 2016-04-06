@@ -36,5 +36,6 @@ function addKeyHandler(keyCode, func) {
 }
 
 addKeyHandler(67, spawnGoomba); //'c'
+addKeyHandler(82, reloadLevel); //'r'
 
 

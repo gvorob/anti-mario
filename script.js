@@ -219,3 +219,6 @@ function changeLevelDelta(delta) {
 
 	loadLevelByNumber(newLevel);
 }
+
+function reloadLevel() 
+	{ loadLevelByNumber(currentLevel); }
