@@ -58,16 +58,11 @@ function pixelCoordsToWorldCoords(p_vec) {
 }
 
 function update(){
+	checkKeyHandlers();
+
 	screenOffset.setV(player.bounds.pos);
 	screenOffset.scale(-cellSize);
 	screenOffset.add(250,250);
-
-	//'c'
-	if(keyState[67]){
-		//spawnSlime();
-		spawnGoomba();
-		keyState[67] = false;
-	}
 
 
 	var stepTime = 20/1000;
