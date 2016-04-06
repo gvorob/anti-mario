@@ -8,6 +8,7 @@ Constants.enemies = {
 		size: new Vector(0.8,0.7),
 		speed: 2,
 		maxAccel: 3,
+		jumpSpeed: 10,
 		color: new color(100, 10, 0, 1),
 		deathAnimTime: 1,
 		constructor: Goomba,
@@ -194,3 +195,8 @@ Goomba.prototype.die = function() {
 }
 
 Goomba.prototype.draw = enemies.simpleDraw;
+
+Goomba.prototype.jump = function() {
+	if(this.bounds.onGround)
+		{ this.bounds.vel.y -= Constants.enemies.goomba.jumpSpeed; }
+}
