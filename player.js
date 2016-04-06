@@ -6,6 +6,7 @@ var Constants = Constants || {};
 		movespeed           : 5,
 		gravity             : 30,
 		jumpspeed           : 15,
+		bouncespeed         : 10,
 		jumpstates          : {
 			NOT_PRESSED: 0,
 			BUTTON:  1,
@@ -44,6 +45,7 @@ Player = function(){
 	this.movespeed    = Constants.player.movespeed;
 	this.gravity      = Constants.player.gravity;
 	this.jumpspeed    = Constants.player.jumpspeed;
+	this.bouncespeed  = Constants.player.bouncespeed;
 	this.jetpackspeed = Constants.player.jetpackspeed;
 
 	this.jetMode = "physics";
@@ -119,7 +121,7 @@ Player.prototype.handleCollisions = function(time) {
 			});
 
 		//bounce
-		this.bounds.vel.y = -10;
+		this.bounds.vel.y = -1 * this.bouncespeed;
 
 		if(amDead)
 			{ this.die(); }

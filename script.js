@@ -5,7 +5,6 @@ var pause;
 var cellSize = 64;
 
 var editMode = false;
-var cripplePlayer = false;
 
 var currentLevel;
 
@@ -14,6 +13,16 @@ var Constants = Constants || {};
 	Constants.misc = {
 		clickJumpRange: 1,
 	};
+}
+
+function cripplePlayer() {
+	player.jumpspeed = 6;
+	player.bouncespeed = 16;
+}
+
+function unCripplePlayer() {
+	player.jumpspeed = Constants.player.jumpspeed;
+	player.bouncespeed = Constants.player.bouncespeed;
 }
 
 $(function() { start();});
@@ -89,6 +98,7 @@ function draw(){
 	ctx.translate(screenOffset.x * -1, screenOffset.y * -1);
 
 
+	/*
 	//==============
 	//Debugging
 	ctx.fillStyle="rgb(255,0,0)";
@@ -101,7 +111,7 @@ function draw(){
 	//Write debug text
 	ctx.fillText("Particles: " + count, 2, 499);
 	ctx.fillText("Vel: x " + player.bounds.vel.x + "; y " + player.bounds.vel.y, 2, 487);
-
+	*/
 }
 
 function setEditMode(val) {
@@ -189,6 +199,9 @@ function loadLevel(levelObj) {
 	player = new Player();
 	player.bounds.pos.setV(levelObj.playerStart);
 
+	if('startCrippled' in levelObj) {
+		cripplePlayer();
+	}
 
 	//clear old enemies
 	enemies.clearAll();
