@@ -166,10 +166,11 @@ Goomba.prototype.update = function(time) {
 
 		var targetVelX = this.speed * this.heading;
 		var accel = Constants.enemies.goomba.maxAccel * time;
-		console.log(accel);
 		this.bounds.vel.x = u.approach(targetVelX, this.bounds.vel.x, accel);
 	} else {  //is dying
 		this.dying -= time;
+		this.bounds.vel.add(0, Constants.enemies.gravity * time);		
+		this.bounds.moveVertical(time);
 		if(this.dying < 0)
 			{ this.isDead = true; }
 	}
